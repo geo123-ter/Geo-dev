@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Settings - Admin Dashboard</title>
+<style>
+  body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    color: #222;
+  }
+  nav {
+    background-color: #222;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  nav .brand {
+    font-weight: bold;
+    font-size: 1.4rem;
+  }
+  nav .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+  nav .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+  nav .nav-links a:hover {
+    color: #00bcd4;
+  }
+  nav button.logout-btn {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  nav button.logout-btn:hover {
+    background-color: #c0392b;
+  }
+  main {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  h1 {
+    margin-bottom: 1.5rem;
+    color: #222;
+  }
+  form {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+  label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  input[type="password"], input[type="checkbox"] {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+  input[type="password"] {
+    width: 100%;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    box-sizing: border-box;
+  }
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  button.save-btn {
+    margin-top: 2rem;
+    background-color: #00bcd4;
+    border: none;
+    padding: 0.8rem 2rem;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button.save-btn:hover {
+    background-color: #0097a7;
+  }
+  .message {
+    margin-top: 1rem;
+    font-weight: 600;
+  }
+  .message.success {
+    color: #4caf50;
+  }
+  .message.error {
+    color: #e74c3c;
+  }
+  @media (max-width: 900px) {
+    main {
+      max-width: 95vw;
+      padding: 0 0.5rem;
+    }
+    form {
+      padding: 1.2rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+      gap: 0.7rem;
+    }
+    nav .nav-links {
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+    }
+    nav .brand {
+      font-size: 1.1rem;
+    }
+    main {
+      margin: 1rem 0;
+      padding: 0 0.2rem;
+    }
+    form {
+      padding: 0.7rem;
+      border-radius: 8px;
+    }
+    button.save-btn {
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.7rem 0;
+    }
+    fieldset {
+      padding: 0;
+    }
+    label, input[type="password"] {
+      font-size: 0.98rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">Admin Dashboard</div>
+  <div class="nav-links">
+    <a href="./dashboard.html">Home</a>
+    <a href="./user.html">Users</a>
+    <a href="./project.html">Projects</a>
+    <a href="./setting.html" style="color:#00bcd4;">Settings</a>
+  </div>
+  <button class="logout-btn" id="logoutBtn">Logout</button>
+</nav>
+
+<main>
+  <h1>Settings</h1>
+  <form id="settingsForm">
+    <fieldset>
+      <legend><strong>Change Password</strong></legend>
+      <label for="currentPassword">Current Password</label>
+      <input type="password" id="currentPassword" placeholder="Enter current password" required />
+      
+      <label for="newPassword">New Password</label>
+      <input type="password" id="newPassword" placeholder="Enter new password" minlength="6" required />
+      
+      <label for="confirmNewPassword">Confirm New Password</label>
+      <input type="password" id="confirmNewPassword" placeholder="Confirm new password" minlength="6" required />
+    </fieldset>
+
+    <fieldset style="margin-top: 2rem;">
+      <legend><strong>Preferences</strong></legend>
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="darkModeToggle" />
+        <label for="darkModeToggle">Enable Dark Mode</label>
+      </div>
+      
+      <div class="checkbox-group" style="margin-top: 1rem;">
+        <input type="checkbox" id="notificationsToggle" />
+        <label for="notificationsToggle">Enable Notifications</label>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="save-btn">Save Settings</button>
+    <div id="settingsMsg" class="message"></div>
+  </form>
+</main>
+
+<script>
+  // Check login - redirect if not logged in
+  const loggedInUser = localStorage.getItem('loggedInUser');
+  if (!loggedInUser) {
+    window.location.href = 'index.html'; // redirect to login
+  }
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('loggedInUser');
+    window.location.href = 'index.html';
+  });
+
+  const settingsForm = document.getElementById('settingsForm');
+  const currentPasswordInput = document.getElementById('currentPassword');
+  const newPasswordInput = document.getElementById('newPassword');
+  const confirmNewPasswordInput = document.getElementById('confirmNewPassword');
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const notificationsToggle = document.getElementById('notificationsToggle');
+  const settingsMsg = document.getElementById('settingsMsg');
+
+  // Load saved preferences from localStorage
+  function loadPreferences() {
+    const darkMode = localStorage.getItem('darkMode') === 'true';
+    const notifications = localStorage.getItem('notifications') === 'true';
+    darkModeToggle.checked = darkMode;
+    notificationsToggle.checked = notifications;
+
+    if(darkMode) {
+      document.body.style.backgroundColor = '#121212';
+      document.body.style.color = '#eee';
+    }
+  }
+
+  loadPreferences();
+
+  // Password validation helper
+  function getUserPassword(email) {
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    if(users[email]) {
+      return users[email].password;
+    }
+    return null;
+  }
+
+  settingsForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    settingsMsg.textContent = '';
+    settingsMsg.className = 'message';
+
+    const currentPass = currentPasswordInput.value.trim();
+    const newPass = newPasswordInput.value.trim();
+    const confirmPass = confirmNewPasswordInput.value.trim();
+
+    // Validate password change if fields are filled
+    if (currentPass || newPass || confirmPass) {
+      if (!currentPass || !newPass || !confirmPass) {
+        settingsMsg.textContent = 'Please fill all password fields to change password.';
+        settingsMsg.classList.add('error');
+        return;
+      }
+      if (newPass.length < 6) {
+        settingsMsg.textContent = 'New password must be at least 6 characters.';
+        settingsMsg.classList.add('error');
+        return;
+      }
+      if (newPass !== confirmPass) {
+        settingsMsg.textContent = 'New password and confirm password do not match.';
+        settingsMsg.classList.add('error');
+        return;
+      }
+
+      const storedPassword = getUserPassword(loggedInUser);
+      if (storedPassword !== currentPass) {
+        settingsMsg.textContent = 'Current password is incorrect.';
+        settingsMsg.classList.add('error');
+        return;
+      }
+
+      // Save new password
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      users[loggedInUser].password = newPass;
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    // Save preferences
+    localStorage.setItem('darkMode', darkModeToggle.checked);
+    localStorage.setItem('notifications', notificationsToggle.checked);
+
+    // Apply dark mode if enabled
+    if (darkModeToggle.checked) {
+      document.body.style.backgroundColor = '#121212';
+      document.body.style.color = '#eee';
+    } else {
+      document.body.style.backgroundColor = '#f0f2f5';
+      document.body.style.color = '#222';
+    }
+
+    settingsMsg.textContent = 'Settings saved successfully!';
+    settingsMsg.classList.add('success');
+
+    // Clear password fields
+    currentPasswordInput.value = '';
+    newPasswordInput.value = '';
+    confirmNewPasswordInput.value = '';
+  });
+</script>
+
+</body>
+</html>
