@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Projects Portfolio</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background: #f0f4f8;
+    margin: 0;
+    padding: 0;
+    color: #222;
+  }
+
+  h1 {
+    text-align: center;
+    margin: 1rem 0 0.5rem 0;
+    font-weight: 700;
+    color: #007acc;
+  }
+  p.subtitle {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #555;
+    font-size: 1.1rem;
+  }
+
+  /* Container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem 1.5rem;
+  }
+
+  /* Filter Buttons */
+  .filters {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .filters button {
+    background: #007acc;
+    border: none;
+    color: white;
+    padding: 0.5rem 1.4rem;
+    margin: 0 0.3rem;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .filters button:hover,
+  .filters button.active {
+    background: #005f99;
+  }
+
+  /* Projects grid */
+  .projects-grid {
+    display: grid;
+    gap: 1.8rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  /* Project card */
+  .project-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  }
+
+  /* Project image */
+  .project-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Project content */
+  .project-content {
+    padding: 1rem 1.2rem;
+    flex-grow: 1;
+  }
+  .project-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: #007acc;
+  }
+  .project-description {
+    font-size: 0.95rem;
+    color: #444;
+    flex-grow: 1;
+  }
+  .project-link {
+    margin-top: 1rem;
+    display: inline-block;
+    background: #00bcd4;
+    color: white;
+    padding: 0.45rem 1rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  .project-link:hover {
+    background: #008ba3;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 600px) {
+    .project-image {
+      height: 140px;
+    }
+  }
+  @media (max-width: 900px) {
+    .container {
+      padding: 0 0.5rem 2rem 0.5rem;
+    }
+    .projects-grid {
+      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      padding: 0 0.2rem 1rem 0.2rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .projects-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .filters button {
+      font-size: 0.95rem;
+      padding: 0.4rem 1rem;
+      margin: 0 0.15rem 0.5rem 0.15rem;
+    }
+    .project-content {
+      padding: 0.8rem 0.7rem;
+    }
+  }
+  /* Header Styling */
+#main-header {
+  background-color: #222;
+  color: white;
+  padding: 1em 0;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+#main-header .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#main-header h1 {
+  font-size: 1.8em;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: default;
+}
+
+#main-header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2em;
+  margin: 0;
+  padding: 0;
+}
+
+#main-header nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  padding-bottom: 3px;
+  border-bottom: 3px solid transparent;
+}
+
+#main-header nav ul li a:hover,
+#main-header nav ul li a.active {
+  color: #f9f9f9;
+  border-bottom-color: #04c6c6;
+}
+
+/* Responsive: stack nav on small screens */
+@media (max-width: 600px) {
+  #main-header .container {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  
+  #main-header nav ul {
+    flex-direction: column;
+    gap: 1em;
+  }
+}
+
+
+/* Footer Styling */
+#main-footer {
+  background-color: #222;
+  color: white;
+  padding: 1.8em 1em;
+  box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 0.9em;
+  margin-top: 14em;
+  height: 6em;
+}
+#main-footer .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+#main-footer p {
+  margin: 0;
+  flex: 1 1 200px;
+}
+
+#main-footer .social-links {
+  display: flex;
+  gap: 1.2em;
+  flex: 1 1 200px;
+  justify-content: center;
+}
+
+#main-footer .social-links a {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+#main-footer .social-links a:hover {
+  color: #004d4d;
+}
+</style>
+</head>
+<body>
+<header id="main-header">
+  <div class="container">
+    <h1>GEO DEV</h1>
+    <nav>
+      <ul>
+        <li><a href="/index.html" class="active">Home</a></li>
+        <li><a href="./about.html">About Me</a></li>
+        <li><a href="./project.html">Portfolio</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+        <li><a href="./login.html">Login</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div class="container">
+  <h1>My Projects</h1>
+  <p class="subtitle">Explore some of my best work across web, mobile, and design.</p>
+
+  <div class="filters" aria-label="Project category filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="web">Web</button>
+    <button class="filter-btn" data-filter="mobile">Mobile</button>
+    <button class="filter-btn" data-filter="design">Design</button>
+  </div>
+
+  <div class="projects-grid" id="projectsGrid">
+    <!-- Project cards will be inserted here dynamically -->
+  </div>
+</div>
+
+     <footer id="main-footer">
+  <div class="container">
+    <p>© 2025 GEO DEV. All rights reserved.</p>
+    <div class="social-links">
+      <a href="https://github.com/geo123-ter" target="_blank" aria-label="GitHub" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 .5C5.73.5.5 5.74.5 12.02c0 5.15 3.34 9.52 7.98 11.06.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.24.7-3.92-1.56-3.92-1.56-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.18.08 1.8 1.21 1.8 1.21 1.04 1.79 2.74 1.27 3.4.97.11-.76.41-1.27.75-1.56-2.59-.3-5.31-1.3-5.31-5.77 0-1.28.46-2.32 1.21-3.14-.12-.3-.52-1.52.11-3.18 0 0 .98-.31 3.22 1.2a11.21 11.21 0 012.93-.39c.99.01 1.99.13 2.93.39 2.23-1.51 3.21-1.2 3.21-1.2.63 1.66.23 2.88.11 3.18.75.82 1.2 1.86 1.2 3.14 0 4.48-2.73 5.46-5.33 5.75.42.36.79 1.08.79 2.18 0 1.58-.01 2.85-.01 3.24 0 .31.2.67.8.56 4.64-1.54 7.97-5.91 7.97-11.06C23.5 5.74 18.27.5 12 .5z"/></svg>
+      </a>
+      <a href="https://linkedin.com/in/geo-dev" target="_blank" aria-label="LinkedIn" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 110 5 2.5 2.5 0 010-5zM3 8.75h4v12.25h-4V8.75zM10 8.75h3.75v1.6h.05a4.1 4.1 0 013.7-2c4 0 4.75 2.62 4.75 6v6.6h-4v-5.8c0-1.38-.03-3.17-1.94-3.17-1.94 0-2.24 1.52-2.24 3.08v5.9h-4V8.75z"/></svg>
+      </a>
+      <a href="mailto:geovanipacis@gmail.com" aria-label="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+<script>
+  const projects = [
+    {
+      title: "Portfolio Website",
+      description: "A clean and responsive portfolio website built with HTML, CSS, and JavaScript.",
+      category: "web",
+      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
+      link: "https://github.com/yourusername/portfolio"
+    },
+    {
+      title: "Task Manager App",
+      description: "A React Native app to manage daily tasks with notifications and cloud sync.",
+      category: "mobile",
+      image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80",
+      link: "https://github.com/yourusername/task-manager-app"
+    },
+    {
+      title: "E-commerce UI Design",
+      description: "A modern e-commerce user interface designed with Figma, focusing on usability and aesthetics.",
+      category: "design",
+      image: "https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=600&q=80",
+      link: "https://dribbble.com/shots/yourshot"
+    },
+    {
+      title: "Blog CMS",
+      description: "A full-stack CMS built with Node.js and MongoDB to manage blog posts efficiently.",
+      category: "web",
+      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80",
+      link: "https://github.com/yourusername/blog-cms"
+    },
+    {
+      title: "Fitness Tracker App",
+      description: "Mobile app to track workouts and diet plans with integrated analytics.",
+      category: "mobile",
+      image: "/assets/download.jpg",
+      link: "https://github.com/yourusername/fitness-tracker"
+    },
+    {
+      title: "Logo Design",
+      description: "Creative logo design for a startup, focusing on brand identity and simplicity.",
+      category: "design",
+      image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
+      link: "https://dribbble.com/shots/yourlogo"
+    }
+  ];
+
+  const projectsGrid = document.getElementById('projectsGrid');
+  const filterButtons = document.querySelectorAll('.filter-btn');
+
+  // Render projects based on category filter
+  function renderProjects(filter = 'all') {
+    projectsGrid.innerHTML = ''; // Clear previous
+
+    const filtered = filter === 'all'
+      ? projects
+      : projects.filter(proj => proj.category === filter);
+
+    if(filtered.length === 0){
+      projectsGrid.innerHTML = '<p style="text-align:center; color:#555;">No projects found.</p>';
+      return;
+    }
+
+    filtered.forEach(proj => {
+      const card = document.createElement('div');
+      card.className = 'project-card';
+
+      card.innerHTML = `
+        <img src="${proj.image}" alt="${proj.title}" class="project-image" />
+        <div class="project-content">
+          <h3 class="project-title">${proj.title}</h3>
+          <p class="project-description">${proj.description}</p>
+          <a href="${proj.link}" target="_blank" rel="noopener" class="project-link" aria-label="Visit ${proj.title} project">View Project</a>
+        </div>
+      `;
+      projectsGrid.appendChild(card);
+    });
+  }
+
+  // Filter button click handler
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active from all buttons
+      filterButtons.forEach(b => b.classList.remove('active'));
+      // Add active to clicked
+      btn.classList.add('active');
+      // Render projects for this category
+      renderProjects(btn.dataset.filter);
+    });
+  });
+
+  // Initial render all
+  renderProjects();
+</script>
+
+</body>
+</html>

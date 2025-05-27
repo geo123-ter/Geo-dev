@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Users - Admin Dashboard</title>
+<style>
+  body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    color: #222;
+  }
+  nav {
+    background-color: #222;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  nav .brand {
+    font-weight: bold;
+    font-size: 1.4rem;
+  }
+  nav .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+  nav .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+  nav .nav-links a:hover {
+    color: #00bcd4;
+  }
+  nav .nav-links a.active {
+    color: #00bcd4;
+    font-weight: 700;
+  }
+  nav button.logout-btn {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  nav button.logout-btn:hover {
+    background-color: #c0392b;
+  }
+  main {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  h1 {
+    margin-bottom: 1.5rem;
+    color: #222;
+  }
+  #searchInput {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #ccc;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+  thead {
+    background-color: #00bcd4;
+    color: white;
+  }
+  thead th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+  tbody td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+  tbody tr:hover {
+    background-color: #f1f9fc;
+  }
+  button.delete-btn {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  button.delete-btn:hover {
+    background-color: #c0392b;
+  }
+  .no-users {
+    text-align: center;
+    margin-top: 2rem;
+    font-style: italic;
+    color: #666;
+  }
+  @media (max-width: 700px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+    }
+    nav .nav-links {
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    main {
+      padding: 0 0.3rem;
+    }
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+      width: 100%;
+    }
+    thead {
+      display: none;
+    }
+    tbody tr {
+      margin-bottom: 1.2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 0.7rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    tbody td {
+      border: none;
+      padding: 0.5rem 0;
+      position: relative;
+      text-align: left;
+    }
+    tbody td::before {
+      content: attr(data-label);
+      font-weight: bold;
+      color: #00bcd4;
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 0.97em;
+    }
+  }
+  @media (max-width: 500px) {
+    nav {
+      padding: 0.5rem;
+    }
+    nav .brand {
+      font-size: 1.2rem;
+    }
+    main {
+      padding: 0 0.2rem;
+    }
+    #searchInput {
+      font-size: 0.9rem;
+      padding: 0.5rem;
+    }
+    button.delete-btn {
+      padding: 0.3rem 0.7rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">Admin Dashboard</div>
+  <div class="nav-links">
+    <a href="dashboard.html">Home</a>
+    <a href="users.html" class="active">Users</a>
+    <a href="projects.html">Projects</a>
+    <a href="settings.html">Settings</a>
+  </div>
+  <button class="logout-btn" id="logoutBtn">Logout</button>
+</nav>
+
+<main>
+  <h1>User Management</h1>
+
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search users by email..."
+    autocomplete="off"
+  />
+
+  <table id="usersTable" aria-label="Users Table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Registered On</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="usersTbody">
+      <!-- Users rows will be inserted here -->
+    </tbody>
+  </table>
+
+  <div id="noUsersMsg" class="no-users" style="display:none;">
+    No users found.
+  </div>
+</main>
+
+<script>
+  const logoutBtn = document.getElementById('logoutBtn');
+  const usersTbody = document.getElementById('usersTbody');
+  const noUsersMsg = document.getElementById('noUsersMsg');
+  const searchInput = document.getElementById('searchInput');
+
+  // Redirect if not logged in
+  const loggedInUser = localStorage.getItem('loggedInUser');
+  if (!loggedInUser) {
+    window.location.href = 'index.html';
+  }
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('loggedInUser');
+    window.location.href = 'index.html';
+  });
+
+  // Fetch users object from localStorage
+  function getUsers() {
+    return JSON.parse(localStorage.getItem('users') || '{}');
+  }
+
+  // Format date helper (ISO string to readable)
+  function formatDate(dateString) {
+    if (!dateString) return '-';
+    const d = new Date(dateString);
+    return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+  }
+
+  // Render users to table, filtered by search term
+  function renderUsers(filter = '') {
+    const users = getUsers();
+    const emails = Object.keys(users);
+    const filteredEmails = emails.filter(email =>
+      email.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    usersTbody.innerHTML = '';
+    if (filteredEmails.length === 0) {
+      noUsersMsg.style.display = 'block';
+      return;
+    }
+    noUsersMsg.style.display = 'none';
+
+    filteredEmails.forEach(email => {
+      const user = users[email];
+      const tr = document.createElement('tr');
+
+      // Email cell
+      const emailTd = document.createElement('td');
+      emailTd.textContent = email;
+      tr.appendChild(emailTd);
+
+      // Phone cell
+      const phoneTd = document.createElement('td');
+      phoneTd.textContent = user.phone || '-';
+      tr.appendChild(phoneTd);
+
+      // Registered On cell
+      const regDateTd = document.createElement('td');
+      regDateTd.textContent = user.registeredOn ? formatDate(user.registeredOn) : '-';
+      tr.appendChild(regDateTd);
+
+      // Actions cell
+      const actionsTd = document.createElement('td');
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.classList.add('delete-btn');
+      deleteBtn.addEventListener('click', () => {
+        if (confirm(`Are you sure you want to delete user "${email}"?`)) {
+          deleteUser(email);
+        }
+      });
+      actionsTd.appendChild(deleteBtn);
+      tr.appendChild(actionsTd);
+
+      usersTbody.appendChild(tr);
+    });
+  }
+
+  // Delete user from localStorage
+  function deleteUser(email) {
+    const users = getUsers();
+    if (users[email]) {
+      delete users[email];
+      localStorage.setItem('users', JSON.stringify(users));
+      if (email === loggedInUser) {
+        // If admin deletes themselves, logout immediately
+        alert('You deleted your own account. Logging out.');
+        localStorage.removeItem('loggedInUser');
+        window.location.href = 'index.html';
+        return;
+      }
+      renderUsers(searchInput.value);
+    }
+  }
+
+  // Initialize user list
+  renderUsers();
+
+  // Search users on input
+  searchInput.addEventListener('input', e => {
+    renderUsers(e.target.value);
+  });
+</script>
+
+</body>
+</html>

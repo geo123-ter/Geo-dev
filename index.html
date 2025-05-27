@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geo Dev – Portfolio</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+<body>
+   <div id="home" class="fade hidden">
+<header id="main-header">
+  <div class="container">
+    <h1>GEO DEV</h1>
+    <nav>
+      <ul>
+        <li><a href="/index.html" class="active">Home</a></li>
+        <li><a href="/pages/about.html">About Me</a></li>
+        <li><a href="/pages/project.html">Portfolio</a></li>
+        <li><a href="/pages/contact.html">Contact</a></li>
+        <li><a href="/pages/login.html">Login</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+  <section id="about">
+    <h1>Hello, I'm <span class="highlight">Geo Dev</span></h1>
+    <p>Front-end Web Developer | Passionate about building websites</p>
+    <h2>About Me</h2>
+    <p>I am a dedicated and passionate web developer with experience in HTML, CSS, JavaScript, and Firebase. I enjoy solving problems and creating clean, responsive websites.</p>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <ul class="skills">
+      <li>HTML5</li>
+      <li>CSS3</li>
+      <li>JavaScript</li>
+      <li>Firebase</li>
+      <li>Git & GitHub</li>
+    </ul>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="project">
+      <h3>My School Project</h3>
+      <p>A responsive website built with Firebase Hosting.</p>
+      <a href="https://your-project-link.web.app" target="_blank">View Live</a>
+    </div>
+    <!-- Add more projects here -->
+  </section>
+
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <p>Email: your.email@example.com</p>
+    <p><a href="https://github.com/yourgithub" target="_blank">GitHub</a> | <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Geo Dev. All rights reserved.</p>
+  </footer>
+  </div>
+   <div id="welcome" class="fade">
+    <h1>Welcome Geo Dev Portifo</h1>
+   <div class="bars-loader">
+  <div></div><div></div><div></div><div></div>
+</div>
+<div class="square-loader"></div>
+
+  </div>
+  <script>
+  
+ 
+  
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      const welcome = document.getElementById("welcome");
+      const home = document.getElementById("home");
+
+      // Fade out welcome
+      welcome.classList.add("hidden");
+
+      // Fade in home
+      home.style.display = "block"; // Ensure it's displayed
+      setTimeout(() => {
+        home.classList.remove("hidden");
+      }, 50); // Slight delay to trigger transition
+    }, 3000); // Adjust the delay as needed
+  });
+
+
+
+</script>
+
+</body>
+</html>

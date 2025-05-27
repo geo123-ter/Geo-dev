@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin Dashboard with Profile</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+  }
+  /* Navigation Bar */
+  nav {
+    background-color: #222;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  nav .brand {
+    font-weight: bold;
+    font-size: 1.4rem;
+  }
+  nav .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+  nav .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+  nav .nav-links a:hover {
+    color: #00bcd4;
+  }
+  nav button.logout-btn {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  nav button.logout-btn:hover {
+    background-color: #c0392b;
+  }
+  /* Main Content */
+  main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  h1 {
+    color: #222;
+    margin-bottom: 1rem;
+  }
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  .card ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  .card ul li {
+    background: #f9f9f9;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+  .summary-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #00bcd4;
+  }
+  .notification {
+    background-color: #e1f5fe;
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.6rem;
+    color: #0277bd;
+    font-size: 0.95rem;
+  }
+  /* Profile Section */
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .profile-info label {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .profile-info input {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    font-size: 1rem;
+  }
+  .profile-info input:disabled {
+    background: #f0f0f0;
+    color: #555;
+  }
+  .edit-btn {
+    margin-top: 1rem;
+    align-self: flex-start;
+    background-color: #00bcd4;
+    border: none;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .edit-btn:hover {
+    background-color: #0097a7;
+  }
+  /* Responsive small tweaks */
+  @media (max-width: 480px) {
+    nav {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    nav .nav-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">Admin Dashboard</div>
+  <div class="nav-links">
+    <a href="/index.html">Home</a>
+    <a href="user.html">Users</a>
+    <a href="project.html">Projects</a>
+    <a href="setting.html">Settings</a>
+  </div>
+  <button class="logout-btn" id="logoutBtn">Logout</button>
+</nav>
+
+<main>
+  <h1>Welcome, Admin!</h1>
+  <p id="userEmail" style="font-weight: 600; margin-bottom: 2rem;"></p>
+
+  <div class="dashboard-grid">
+    <!-- User Summary Card -->
+    <section class="card" id="userSummary">
+      <h2>User Summary</h2>
+      <div>
+        <div class="summary-number" id="userCount">0</div>
+        <p>Registered Users</p>
+      </div>
+    </section>
+
+    <!-- Recent Projects Card -->
+    <section class="card" id="recentProjects">
+      <h2>Recent Projects</h2>
+      <ul id="projectsList"></ul>
+    </section>
+
+    <!-- Notifications Card -->
+    <section class="card" id="notifications">
+      <h2>Notifications</h2>
+      <div id="notificationsList"></div>
+    </section>
+
+    <!-- Profile Card -->
+    <section class="card" id="profileSection">
+      <h2>Your Profile</h2>
+      <form id="profileForm" class="profile-info">
+        <label for="profileUsername">Username:</label>
+        <input type="text" id="profileUsername" disabled required />
+
+        <label for="profileEmail">Email:</label>
+        <input type="email" id="profileEmail" disabled required />
+
+        <label for="profilePhone">Phone Number:</label>
+        <input type="tel" id="profilePhone" pattern="[0-9]{10}" maxlength="10" disabled placeholder="10-digit number" />
+
+        <button type="button" id="editProfileBtn" class="edit-btn">Edit Profile</button>
+        <button type="submit" id="saveProfileBtn" class="edit-btn" style="display:none; background:#4caf50;">Save Changes</button>
+      </form>
+      <p id="profileMsg" style="margin-top:10px; font-weight: 600;"></p>
+    </section>
+  </div>
+</main>
+
+<script>
+  const userEmailEl = document.getElementById('userEmail');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const userCountEl = document.getElementById('userCount');
+  const projectsListEl = document.getElementById('projectsList');
+  const notificationsListEl = document.getElementById('notificationsList');
+
+  // Profile elements
+  const profileForm = document.getElementById('profileForm');
+  const profileUsernameInput = document.getElementById('profileUsername');
+  const profileEmailInput = document.getElementById('profileEmail');
+  const profilePhoneInput = document.getElementById('profilePhone');
+  const editProfileBtn = document.getElementById('editProfileBtn');
+  const saveProfileBtn = document.getElementById('saveProfileBtn');
+  const profileMsg = document.getElementById('profileMsg');
+
+  // Dummy projects and notifications
+  const dummyProjects = [
+    'Portfolio Website Redesign',
+    'Mobile App for E-commerce',
+    'Blog Platform Development',
+    'Admin Dashboard Revamp',
+    'Chat Application Feature Update'
+  ];
+  const dummyNotifications = [
+    'New user registered: jane@example.com',
+    'Project "Mobile App for E-commerce" deadline extended',
+    'System maintenance scheduled for Saturday',
+    'New message from client regarding project requirements'
+  ];
+
+  // Check login
+  const loggedInUser = localStorage.getItem('loggedInUser');
+  if (!loggedInUser) {
+    window.location.href = 'index.html';
+  } else {
+    userEmailEl.textContent = `Logged in as: ${loggedInUser}`;
+  }
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('loggedInUser');
+    window.location.href = 'index.html';
+  });
+
+  // Load user count
+  function loadUserCount() {
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    const count = Object.keys(users).length;
+    userCountEl.textContent = count;
+  }
+
+  // Load recent projects
+  function loadRecentProjects() {
+    projectsListEl.innerHTML = '';
+    dummyProjects.forEach(proj => {
+      const li = document.createElement('li');
+      li.textContent = proj;
+      projectsListEl.appendChild(li);
+    });
+  }
+
+  // Load notifications
+  function loadNotifications() {
+    notificationsListEl.innerHTML = '';
+    dummyNotifications.forEach(note => {
+      const div = document.createElement('div');
+      div.className = 'notification';
+      div.textContent = note;
+      notificationsListEl.appendChild(div);
+    });
+  }
+
+  // Profile logic
+
+  // Load profile from localStorage or default
+  function loadProfile() {
+    // Store profiles in localStorage as 'profiles' key (object with email as key)
+    let profiles = JSON.parse(localStorage.getItem('profiles') || '{}');
+    let profile = profiles[loggedInUser] || {
+      username: 'Admin',
+      email: loggedInUser,
+      phone: ''
+    };
+    profileUsernameInput.value = profile.username;
+    profileEmailInput.value = profile.email;
+    profilePhoneInput.value = profile.phone || '';
+  }
+
+  // Enable editing profile inputs
+  function enableEditing() {
+    profileUsernameInput.disabled = false;
+    profilePhoneInput.disabled = false;
+    // Email stays disabled (usually fixed)
+    editProfileBtn.style.display = 'none';
+    saveProfileBtn.style.display = 'inline-block';
+    profileMsg.textContent = '';
+  }
+
+  // Disable editing profile inputs
+  function disableEditing() {
+    profileUsernameInput.disabled = true;
+    profilePhoneInput.disabled = true;
+    editProfileBtn.style.display = 'inline-block';
+    saveProfileBtn.style.display = 'none';
+  }
+
+  // Save profile changes
+  profileForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const username = profileUsernameInput.value.trim();
+    const phone = profilePhoneInput.value.trim();
+
+    if (username.length < 2) {
+      profileMsg.style.color = 'red';
+      profileMsg.textContent = 'Username must be at least 2 characters.';
+      return;
+    }
+    if (phone && !/^\d{10}$/.test(phone)) {
+      profileMsg.style.color = 'red';
+      profileMsg.textContent = 'Phone must be a 10-digit number.';
+      return;
+    }
+
+    let profiles = JSON.parse(localStorage.getItem('profiles') || '{}');
+    profiles[loggedInUser] = {
+      username,
+      email: loggedInUser,
+      phone
+    };
+    localStorage.setItem('profiles', JSON.stringify(profiles));
+
+    profileMsg.style.color = 'green';
+    profileMsg.textContent = 'Profile saved successfully!';
+    disableEditing();
+  });
+
+  editProfileBtn.addEventListener('click', enableEditing);
+
+  // Initialize dashboard
+  loadUserCount();
+  loadRecentProjects();
+  loadNotifications();
+  loadProfile();
+
+</script>
+
+</body>
+</html>
