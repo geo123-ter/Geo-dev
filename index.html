@@ -8,6 +8,9 @@
 </head>
 <body>
 <body>
+    <!-- Internet Status Message -->
+  <div id="offline-message">🚫 You're offline</div>
+
    <div id="home" class="fade hidden">
 <header id="main-header">
   <div class="container">
@@ -91,7 +94,21 @@
   });
 
 
+  // Internet check
+    function checkConnection() {
+      const offlineMsg = document.getElementById('offline-message');
+      if (!navigator.onLine) {
+        offlineMsg.style.display = 'block';
+      } else {
+        offlineMsg.style.display = 'none';
+      }
+    }
 
+    window.addEventListener('online', checkConnection);
+    window.addEventListener('offline', checkConnection);
+
+    // Initial check
+    checkConnection();
 </script>
 
 </body>

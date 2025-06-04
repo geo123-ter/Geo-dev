@@ -1,161 +1,277 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Admin Dashboard with Profile</title>
-<style>
-  /* Reset */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f2f5;
-  }
-  /* Navigation Bar */
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard</title>
+  <style>
+    /* Reset & base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+body {
+  background: #f4f6f8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Offline Banner */
+.offline-banner {
+  display: none;
+  text-align: center;
+  padding: 0.8rem;
+  background-color: #ffcdd2;
+  color: #b71c1c;
+  font-weight: bold;
+  border-bottom: 1px solid #b71c1c;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Loader */
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  z-index: 9999;
+}
+
+/* Navigation */
+nav {
+  background-color: #2c3e50;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+}
+
+nav .brand {
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+nav .nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+nav .nav-links a:hover {
+  color: #1abc9c;
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Main Content */
+main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 5rem auto 2rem; 
+  display: grid;
+  grid-template-columns: ;
+  gap: 2rem;
+}
+
+/* User Email Text */
+#userEmail {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Cards */
+.card {
+  background-color: white;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+}
+
+.card h2 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+/* User Summary */
+.summary-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1abc9c;
+}
+
+/* Projects List */
+#projectsList {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: #34495e;
+}
+
+#projectsList li {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Notifications */
+#notificationsList {
+  overflow-y: auto;
+  max-height: 150px;
+  padding-right: 5px;
+}
+
+.notification {
+  background: #ecf0f1;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  color: #555;
+  box-shadow: inset 0 0 3px rgb(0 0 0 / 0.05);
+}
+
+/* Profile Section */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info label {
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+  color: #34495e;
+}
+
+.profile-info input {
+  padding: 0.5rem 0.7rem;
+  border: 1.5px solid #bdc3c7;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.profile-info input:focus {
+  outline: none;
+  border-color: #1abc9c;
+  box-shadow: 0 0 5px #1abc9caa;
+}
+
+/* Disabled input style */
+.profile-info input:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+/* Buttons */
+.edit-btn {
+  margin-top: 1.5rem;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  color: white;
+  background-color: #3498db;
+  align-self: flex-start;
+}
+
+.edit-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Save button variant */
+#saveProfileBtn {
+  background-color: #4caf50;
+}
+
+#saveProfileBtn:hover {
+  background-color: #388e3c;
+}
+
+/* Profile message */
+#profileMsg {
+  margin-top: 0.7rem;
+  font-weight: 600;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
   nav {
-    background-color: #222;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  nav .brand {
-    font-weight: bold;
-    font-size: 1.4rem;
+    flex-direction: column;
+    align-items: flex-start;
   }
   nav .nav-links {
-    display: flex;
-    gap: 1rem;
+    margin-top: 0.8rem;
   }
   nav .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s;
-  }
-  nav .nav-links a:hover {
-    color: #00bcd4;
-  }
-  nav button.logout-btn {
-    background-color: #e74c3c;
-    border: none;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  nav button.logout-btn:hover {
-    background-color: #c0392b;
-  }
-  /* Main Content */
-  main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-  }
-  h1 {
-    color: #222;
-    margin-bottom: 1rem;
+    margin-left: 0;
+    margin-right: 1rem;
   }
   .dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: 1fr;
   }
-  .card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  main {
+    margin: 6rem 1rem 2rem;
+    padding: 1rem;
   }
-  .card h2 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  .card ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-  }
-  .card ul li {
-    background: #f9f9f9;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.95rem;
-  }
-  .summary-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #00bcd4;
-  }
-  .notification {
-    background-color: #e1f5fe;
-    padding: 0.8rem 1rem;
-    border-radius: 6px;
-    margin-bottom: 0.6rem;
-    color: #0277bd;
-    font-size: 0.95rem;
-  }
-  /* Profile Section */
-  .profile-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-  }
-  .profile-info label {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-  }
-  .profile-info input {
-    padding: 0.5rem;
-    border-radius: 6px;
-    border: 1.5px solid #ccc;
-    font-size: 1rem;
-  }
-  .profile-info input:disabled {
-    background: #f0f0f0;
-    color: #555;
-  }
-  .edit-btn {
-    margin-top: 1rem;
-    align-self: flex-start;
-    background-color: #00bcd4;
-    border: none;
-    color: white;
-    padding: 0.6rem 1.2rem;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .edit-btn:hover {
-    background-color: #0097a7;
-  }
-  /* Responsive small tweaks */
-  @media (max-width: 480px) {
-    nav {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    nav .nav-links {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  }
-</style>
+}
+
+  </style>
 </head>
 <body>
+
+<div class="offline-banner" id="offlineBanner">⚠️ You are offline. Check your internet connection.</div>
+<div class="loader" id="loader">Loading dashboard...</div>
 
 <nav>
   <div class="brand">Admin Dashboard</div>
@@ -168,12 +284,11 @@
   <button class="logout-btn" id="logoutBtn">Logout</button>
 </nav>
 
-<main>
+<main style="display: none;" id="mainContent">
   <h1>Welcome, Admin!</h1>
   <p id="userEmail" style="font-weight: 600; margin-bottom: 2rem;"></p>
 
   <div class="dashboard-grid">
-    <!-- User Summary Card -->
     <section class="card" id="userSummary">
       <h2>User Summary</h2>
       <div>
@@ -182,31 +297,25 @@
       </div>
     </section>
 
-    <!-- Recent Projects Card -->
     <section class="card" id="recentProjects">
       <h2>Recent Projects</h2>
       <ul id="projectsList"></ul>
     </section>
 
-    <!-- Notifications Card -->
     <section class="card" id="notifications">
       <h2>Notifications</h2>
       <div id="notificationsList"></div>
     </section>
 
-    <!-- Profile Card -->
     <section class="card" id="profileSection">
       <h2>Your Profile</h2>
       <form id="profileForm" class="profile-info">
         <label for="profileUsername">Username:</label>
         <input type="text" id="profileUsername" disabled required />
-
         <label for="profileEmail">Email:</label>
         <input type="email" id="profileEmail" disabled required />
-
         <label for="profilePhone">Phone Number:</label>
         <input type="tel" id="profilePhone" pattern="[0-9]{10}" maxlength="10" disabled placeholder="10-digit number" />
-
         <button type="button" id="editProfileBtn" class="edit-btn">Edit Profile</button>
         <button type="submit" id="saveProfileBtn" class="edit-btn" style="display:none; background:#4caf50;">Save Changes</button>
       </form>
@@ -222,7 +331,6 @@
   const projectsListEl = document.getElementById('projectsList');
   const notificationsListEl = document.getElementById('notificationsList');
 
-  // Profile elements
   const profileForm = document.getElementById('profileForm');
   const profileUsernameInput = document.getElementById('profileUsername');
   const profileEmailInput = document.getElementById('profileEmail');
@@ -231,7 +339,10 @@
   const saveProfileBtn = document.getElementById('saveProfileBtn');
   const profileMsg = document.getElementById('profileMsg');
 
-  // Dummy projects and notifications
+  const offlineBanner = document.getElementById('offlineBanner');
+  const loader = document.getElementById('loader');
+  const mainContent = document.getElementById('mainContent');
+
   const dummyProjects = [
     'Portfolio Website Redesign',
     'Mobile App for E-commerce',
@@ -246,27 +357,43 @@
     'New message from client regarding project requirements'
   ];
 
-  // Check login
+  // Handle internet connection
+  function updateOnlineStatus() {
+    offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
+  }
+
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+
+  updateOnlineStatus();
+
+  // Start with loading simulation
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      loader.style.display = 'none';
+      mainContent.style.display = 'block';
+    }, 2000); // Simulate 2 seconds loading
+  });
+
+  // Auth check
   const loggedInUser = localStorage.getItem('loggedInUser');
   if (!loggedInUser) {
     window.location.href = 'index.html';
-  } else {
-    userEmailEl.textContent = `Logged in as: ${loggedInUser}`;
   }
+
+  const user = JSON.parse(loggedInUser);
+  userEmailEl.textContent = `Logged in as: ${user.username} (${user.email})`;
 
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('loggedInUser');
     window.location.href = 'index.html';
   });
 
-  // Load user count
   function loadUserCount() {
     const users = JSON.parse(localStorage.getItem('users') || '{}');
-    const count = Object.keys(users).length;
-    userCountEl.textContent = count;
+    userCountEl.textContent = Object.keys(users).length;
   }
 
-  // Load recent projects
   function loadRecentProjects() {
     projectsListEl.innerHTML = '';
     dummyProjects.forEach(proj => {
@@ -276,7 +403,6 @@
     });
   }
 
-  // Load notifications
   function loadNotifications() {
     notificationsListEl.innerHTML = '';
     dummyNotifications.forEach(note => {
@@ -287,33 +413,26 @@
     });
   }
 
-  // Profile logic
-
-  // Load profile from localStorage or default
   function loadProfile() {
-    // Store profiles in localStorage as 'profiles' key (object with email as key)
-    let profiles = JSON.parse(localStorage.getItem('profiles') || '{}');
-    let profile = profiles[loggedInUser] || {
-      username: 'Admin',
-      email: loggedInUser,
+    const profiles = JSON.parse(localStorage.getItem('profiles') || '{}');
+    const profile = profiles[user.email] || {
+      username: user.username,
+      email: user.email,
       phone: ''
     };
     profileUsernameInput.value = profile.username;
     profileEmailInput.value = profile.email;
-    profilePhoneInput.value = profile.phone || '';
+    profilePhoneInput.value = profile.phone;
   }
 
-  // Enable editing profile inputs
   function enableEditing() {
     profileUsernameInput.disabled = false;
     profilePhoneInput.disabled = false;
-    // Email stays disabled (usually fixed)
     editProfileBtn.style.display = 'none';
     saveProfileBtn.style.display = 'inline-block';
     profileMsg.textContent = '';
   }
 
-  // Disable editing profile inputs
   function disableEditing() {
     profileUsernameInput.disabled = true;
     profilePhoneInput.disabled = true;
@@ -321,7 +440,6 @@
     saveProfileBtn.style.display = 'none';
   }
 
-  // Save profile changes
   profileForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -339,10 +457,10 @@
       return;
     }
 
-    let profiles = JSON.parse(localStorage.getItem('profiles') || '{}');
-    profiles[loggedInUser] = {
+    const profiles = JSON.parse(localStorage.getItem('profiles') || '{}');
+    profiles[user.email] = {
       username,
-      email: loggedInUser,
+      email: user.email,
       phone
     };
     localStorage.setItem('profiles', JSON.stringify(profiles));
@@ -354,12 +472,11 @@
 
   editProfileBtn.addEventListener('click', enableEditing);
 
-  // Initialize dashboard
+  // Init
   loadUserCount();
   loadRecentProjects();
   loadNotifications();
   loadProfile();
-
 </script>
 
 </body>

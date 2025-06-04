@@ -1,242 +1,188 @@
+/* ====== Reset ====== */
+* {
+  box-sizing: border-box;
+}
 body {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 0;
-  padding: 0;
-  line-height: 1.6;
-  background-color: #f9f9f9;
-  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
 }
 
-  /* Header Styling */
-#main-header {
-  background-color: #222;
-  color: white;
-  padding: 1em 0;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-  position: sticky;
+/* ====== Loader ====== */
+.loader {
+  position: fixed;
   top: 0;
-  z-index: 1000;
-}
-
-#main-header .container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 1.5em;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  z-index: 9999;
 }
 
-#main-header h1 {
-  font-size: 1.8em;
-  font-weight: 700;
-  letter-spacing: 2px;
-  cursor: default;
+/* ====== Offline Banner ====== */
+.offline-banner {
+  display: none;
+  text-align: center;
+  padding: 0.8rem;
+  background-color: #ffcdd2;
+  color: #b71c1c;
+  font-weight: bold;
 }
 
-#main-header nav ul {
-  list-style: none;
+/* ====== Navigation Bar ====== */
+nav {
+  background-color: #222;
+  color: white;
+  padding: 1rem 2rem;
   display: flex;
-  gap: 2em;
-  margin: 0;
-  padding: 0;
+  justify-content: space-between;
+  align-items: center;
 }
-
-#main-header nav ul li a {
+nav .brand {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+nav .nav-links {
+  display: flex;
+  gap: 1rem;
+}
+nav .nav-links a {
   color: white;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.3s ease;
-  padding-bottom: 3px;
-  border-bottom: 3px solid transparent;
+  transition: color 0.3s;
+}
+nav .nav-links a:hover {
+  color: #00bcd4;
+}
+nav button.logout-btn {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+nav button.logout-btn:hover {
+  background-color: #c0392b;
 }
 
-#main-header nav ul li a:hover,
-#main-header nav ul li a.active {
-  color: #f9f9f9;
-  border-bottom-color: #04c6c6;
+/* ====== Main Content ====== */
+main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
-/* loading */
-
-
-  
-  #home {
-    display: none;
-  }
-
-  /* Loader styling */
-
-.square-loader {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #fbfdfe;
-  border-top-color: transparent;
-  animation: spinSquare 0.8s linear infinite;
+h1 {
+  color: #222;
+  margin-bottom: 1rem;
 }
 
-@keyframes spinSquare {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* ====== Dashboard Grid ====== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
-
-  /* Fade effect */
-  .fade {
-    opacity: 1;
-    transition: opacity 1s ease-in-out;
-  }
-
-  .fade.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-#welcome {
+/* ====== Card ====== */
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #8b9090;
-  color: white;
-  text-align: center;
+  justify-content: space-between;
 }
-#welcome h1 {
-  font-size: 3em;
-  margin-bottom: 0.5em;
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #333;
 }
-
-
-
-
-/* Responsive: stack nav on small screens */
-@media (max-width: 600px) {
-  #main-header .container {
-    flex-direction: column;
-    gap: 0.5em;
-  }
-  
-  #main-header nav ul {
-    flex-direction: column;
-    gap: 1em;
-  }
-}
-.highlight {
-  color: #00bcd4;
-}
-
-nav a {
-  color: #fff;
-  margin: 0 10px;
-  text-decoration: none;
-  font-weight: bold;
-   font-size: 20px;
-  margin-left: 20px;
-}
-
-section {
-  padding: 2em;
-  max-width: 900px;
-  margin: auto;
-}
-
-h2 {
-  border-bottom: 2px solid #00bcd4;
-  padding-bottom: 0.3em;
-}
-
-.skills {
+.card ul {
   list-style: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
+  padding-left: 0;
+  margin: 0;
+}
+.card ul li {
+  background: #f9f9f9;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
 }
 
-.skills li {
-  background: #00bcd4;
-  color: #fff;
-  margin: 5px;
-  padding: 10px 15px;
-  border-radius: 5px;
-}
-
-.project {
-  background: #fff;
-  padding: 1em;
-  margin: 1em 0;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-.project a {
-  text-decoration: none;
+/* ====== Summary Number ====== */
+.summary-number {
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #00bcd4;
 }
 
-footer {
-  text-align: center;
-  padding: 1em;
-  background: #222;
+/* ====== Notification Items ====== */
+.notification {
+  background-color: #e1f5fe;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 0.6rem;
+  color: #0277bd;
+  font-size: 0.95rem;
+}
+
+/* ====== Profile Section ====== */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.profile-info label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.profile-info input {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1.5px solid #ccc;
+  font-size: 1rem;
+}
+.profile-info input:disabled {
+  background: #f0f0f0;
+  color: #555;
+}
+
+/* ====== Buttons ====== */
+.edit-btn {
+  margin-top: 1rem;
+  align-self: flex-start;
+  background-color: #00bcd4;
+  border: none;
   color: white;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-#welcome h1 {
-  font-size: 18px;
-  margin-bottom: 0.5em;
+.edit-btn:hover {
+  background-color: #0097a7;
 }
-@media (max-width: 700px) {
-  header {
-    padding: 1em;
-  }
 
-  header h1 {
-    font-size: 1.5em;
-  }
-
-  nav a {
-    display: block;
-    margin: 10px 0;
-    font-size: 18px;
-    margin-left: 0;
-  }
-
-  section {
-    padding: 1em;
-  }
-
-  .skills {
+/* ====== Responsive Adjustments ====== */
+@media (max-width: 480px) {
+  nav {
     flex-direction: column;
-    align-items: stretch;
+    gap: 0.5rem;
   }
-
-  .skills li {
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-  }
-}
-@media (max-width: 500px) {
-  header {
-    padding: 0.5em;
-  }
-
-  header h1 {
-    font-size: 1.1em;
-  }
-
-  nav a {
-    font-size: 16px;
-    padding: 8px 0;
-  }
-
-  section {
-    padding: 0.5em;
-  }
-
-  .project {
-    padding: 0.5em;
-    font-size: 0.95em;
-  }
-
-  h2 {
-    font-size: 1.1em;
+  nav .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
