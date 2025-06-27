@@ -401,6 +401,9 @@
 </head>
 <body>
 
+<div class="offline-banner" id="offlineBanner">⚠️ You are offline. Check your internet connection.</div>
+<div class="loader" id="loader">Loading dashboard...</div>
+
 <!-- Sidebar -->
 <div id="sidebar" aria-label="Sidebar navigation">
   <div class="logo" title="Geo Dev">Geo Dev</div>
@@ -516,62 +519,10 @@
   // User data
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
   if (!loggedInUser) {
-    window.location.href = './login.html';
+    window.location.href = 'index.html';
+  } else {
+    userEmailEl.textContent = `Logged in as: ${loggedInUser}`;
   }
-
-  // Elements
-  const usernameDisplay = document.getElementById('usernameDisplay');
-  const emailDisplay = document.getElementById('emailDisplay');
-  const phoneDisplay = document.getElementById('phoneDisplay');
-  const welcomeMsg = document.getElementById('welcomeMsg');
-  const profileAvatar = document.getElementById('profileAvatar');
-
-  // Show user info
-  usernameDisplay.textContent = loggedInUser.username || 'User';
-  emailDisplay.textContent = loggedInUser.email || 'Not provided';
-
-  // Initials for avatar
-  function getInitials(name) {
-    const parts = name.trim().split(' ');
-    if (parts.length === 1) return parts[0][0].toUpperCase();
-    return (parts[0][0] + parts[1][0]).toUpperCase();
-  }
-  profileAvatar.textContent = getInitials(loggedInUser.username || 'User');
-
-  // Phone from users object
-  const users = JSON.parse(localStorage.getItem('users') || '{}');
-  const userData = users[loggedInUser.email];
-  phoneDisplay.textContent = userData?.phone || 'N/A';
-
-  welcomeMsg.textContent = `Welcome back, ${loggedInUser.username}!`;
-
-  // Dashboard stats - replace with dynamic data if needed
-  document.getElementById('projCount').textContent = userData?.projectsCompleted || 5;
-  document.getElementById('msgCount').textContent = userData?.messages || 12;
-  document.getElementById('notifCountWidget').textContent = userData?.notifications || 3;
-  document.getElementById('tasksCount').textContent = userData?.pendingTasks || 7;
-  document.getElementById('notifCount').textContent = userData?.notifications || 3;
-
-  // Recent Activity sample data
-  const activityList = document.getElementById('activityList');
-  const recentActivities = userData?.recentActivity || [
-    { time: '2025-06-26 14:30', text: 'Logged in from mobile device' },
-    { time: '2025-06-25 09:15', text: 'Completed project "Geo App"' },
-    { time: '2025-06-24 17:42', text: 'Updated profile picture' },
-    { time: '2025-06-23 11:10', text: 'Sent message to support' },
-  ];
-
-  recentActivities.forEach(activity => {
-    const li = document.createElement('li');
-    li.innerHTML = `<strong>${activity.text}</strong> <br><time class="activity-time">${activity.time}</time>`;
-    activityList.appendChild(li);
-  });
-
-  // Logout button and modal
-  const logoutBtn = document.getElementById('logoutBtn');
-  const logoutModal = document.getElementById('logoutModal');
-  const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
-  const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
 
   logoutBtn.addEventListener('click', () => {
     logoutModal.style.display = 'flex';
