@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Geo Dev | Projects</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fa;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    overflow-x: hidden;
+  }
+  body.dark {
+    background-color: #121212;
+    color: #eee;
+  }
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+    a:hover {
+        color: #007b8a;
+    }
+    /* Accessibility */
+    [role="navigation"] {
+        outline: none;
+    }
+
+  /* Sidebar */
+  #sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 250px;
+    background-color: #007b8a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    transition: width 0.3s ease;
+    z-index: 1000;
+  }
+  #sidebar.collapsed {
+    width: 70px;
+  }
+  #sidebar .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    white-space: nowrap;
+    user-select: none;
+  }
+  #sidebar.collapsed .logo {
+    text-align: center;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+  #sidebar nav {
+    flex-grow: 1;
+  }
+  #sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  #sidebar nav a:hover, #sidebar nav a.active {
+    background-color: #004f55;
+  }
+  #sidebar.collapsed nav a span.text {
+    display: none;
+  }
+  #sidebar nav a svg {
+    min-width: 20px;
+    fill: white;
+  }
+  #sidebar .toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin-top: auto;
+    font-size: 1.2rem;
+  }
+  #sidebar.collapsed .toggle-btn {
+    text-align: center;
+  }
+
+  /* Main Content */
+  #main-content {
+    margin-left: 250px;
+    padding: 2rem 3rem;
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
+  }
+  #sidebar.collapsed + #main-content {
+    margin-left: 70px;
+  }
+
+  /* Header */
+  header#main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  header#main-header h1 {
+    font-size: 2rem;
+    color: #007b8a;
+  }
+
+  /* Filter/Search */
+  #filters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  #filters input[type="search"] {
+    flex-grow: 1;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #ccc;
+    font-size: 1rem;
+  }
+  #filters select {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #ccc;
+    font-size: 1rem;
+    background: white;
+    cursor: pointer;
+  }
+
+  /* Projects Grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  body.dark .project-card {
+    background: #1e1e1e;
+    box-shadow: 0 12px 25px rgba(255,255,255,0.05);
+  }
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 25px 40px rgba(0,0,0,0.2);
+  }
+  .project-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: #ddd url('https://via.placeholder.com/600x400?text=Project+Image') center center no-repeat;
+  }
+  .project-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .project-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #007b8a;
+  }
+  body.dark .project-title {
+    color: #66c2d9;
+  }
+  .project-desc {
+    flex-grow: 1;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+  body.dark .project-desc {
+    color: #ccc;
+  }
+  .project-tags {
+    margin-bottom: 1rem;
+  }
+  .tag {
+    display: inline-block;
+    background: #e0f7fa;
+    color: #006064;
+    font-weight: 600;
+    padding: 0.25rem 0.7rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+  body.dark .tag {
+    background: #004f55;
+    color: #a0d9db;
+  }
+  .project-links {
+    display: flex;
+    gap: 1rem;
+  }
+  .btn {
+    flex-grow: 1;
+    text-align: center;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    background: #007b8a;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  .btn:hover {
+    background: #005f64;
+  }
+
+  /* Pagination */
+  #pagination {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  #pagination button {
+    background: #007b8a;
+    border: none;
+    color: white;
+    padding: 0.6rem 1rem;
+    margin: 0 0.25rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  #pagination button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  #pagination button:hover:not(:disabled) {
+    background: #005f64;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    #main-content {
+      padding: 1.5rem 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar" aria-label="Sidebar navigation">
+  <div class="logo" title="Geo Dev">Geo Dev</div>
+  <nav role="navigation" aria-label="Main menu">
+    <a href="./dashboard.html" >
+      <span class="text">Dashboard</span>
+    </a>
+    <a href="./setting.html" aria-label="Go to Settings">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="white" d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm-7 4a7 7 0 0 1 12 4.9 2 2 0 1 1-1.3 1.3A7 7 0 0 1 5 12z"/></svg>
+      <span class="text">Settings</span>
+    </a>
+    <a href="./project2.html" class="active" aria-current="page" aria-label="Current page Projects">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="white" d="M20 6H4v12h16V6zm0-2c1.1 0 2 .9 2 2v12a2 2 0 0 1-2 2H4c-1.1 0-2-.9-2-2V6a2 2 0 0 1 2-2h16zM6 8h12v8H6V8z"/></svg>
+      <span class="text">Projects</span>
+    </a>
+  </nav>
+  <button class="toggle-btn" aria-label="Toggle sidebar">&#9776;</button>
+</div>
+
+
+<!-- Main Content -->
+<div id="main-content">
+  <header id="main-header">
+    <h1>My Projects</h1>
+    <div id="filters">
+      <input type="search" id="searchInput" placeholder="Search projects..." aria-label="Search projects" />
+      <select id="techFilter" aria-label="Filter projects by technology">
+        <option value="">All Technologies</option>
+        <option value="HTML">HTML</option>
+        <option value="CSS">CSS</option>
+        <option value="JavaScript">JavaScript</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="projects-grid" id="projectsGrid" aria-live="polite" aria-atomic="true">
+    <!-- Project cards inserted here by JS -->
+  </div>
+
+  <div id="pagination" role="navigation" aria-label="Project pagination">
+    <button id="prevPage" aria-label="Previous page">&lt; Prev</button>
+    <span id="pageInfo" aria-live="polite" style="margin: 0 1rem;"></span>
+    <button id="nextPage" aria-label="Next page">Next &gt;</button>
+  </div>
+</div>
+
+<script>
+  // Sidebar toggle
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = sidebar.querySelector('.toggle-btn');
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+  });
+
+  // Sample project data (replace with real data or API calls)
+  const projects = [
+    {
+      title: "School Project",
+      description: "A responsive website hosted on Firebase Hosting.",
+      tech: ["HTML", "CSS", "JavaScript", "Firebase"],
+      imageUrl: "/assets/school.png",
+    },
+    {
+      title: "Portfolio Website",
+      description: "Personal portfolio built with html,css,js and hosted on Netlify.",
+      tech: ["Html", "CSS", "JavaScript"],
+      imageUrl: "/assets/portiforiol.png"
+    },
+    {
+      title: "E-commerce Shop",
+      description: "Full-stack e-commerce app using Firebase and vanilla JS.",
+      tech: ["HTML", "CSS", "JavaScript", ],
+      imageUrl: "/assets/clean.png",
+    },
+    {
+      title: "Blog Platform",
+      description: "A simple blogging platform with user authentication.",
+      tech: ["Html", "CSS", "JavaScript"],
+      imageUrl: "/assets/bloh.png"
+    },
+    {
+      title: "Weather App",
+      description: "Live weather updates using OpenWeather API.",
+      tech: ["HTML", "CSS", "JavaScript"],
+      imageUrl: "/assets/weather.jpeg"
+    },
+    {
+      title: "Task Manager",
+      description: "Task organizer with drag-and-drop UI built in React.",
+      tech: ["Html", "CSS", "JavaScript"],
+      imageUrl: "/assets/task.jpeg"
+    },
+    // Add more projects as needed
+  ];
+
+  const projectsPerPage = 4;
+  let currentPage = 1;
+  let filteredProjects = [...projects];
+
+  const projectsGrid = document.getElementById('projectsGrid');
+  const searchInput = document.getElementById('searchInput');
+  const techFilter = document.getElementById('techFilter');
+  const prevBtn = document.getElementById('prevPage');
+  const nextBtn = document.getElementById('nextPage');
+  const pageInfo = document.getElementById('pageInfo');
+
+  function renderProjects() {
+    projectsGrid.innerHTML = '';
+
+    const start = (currentPage - 1) * projectsPerPage;
+    const end = start + projectsPerPage;
+    const projectsToShow = filteredProjects.slice(start, end);
+
+    if (projectsToShow.length === 0) {
+      projectsGrid.innerHTML = '<p>No projects found.</p>';
+      pageInfo.textContent = '';
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+      return;
+    }
+
+    projectsToShow.forEach(project => {
+      const card = document.createElement('article');
+      card.classList.add('project-card');
+
+      card.innerHTML = `
+        <img src="${project.imageUrl}" alt="${project.title} screenshot" class="project-image" loading="lazy" />
+        <div class="project-content">
+          <h3 class="project-title">${project.title}</h3>
+          <p class="project-desc">${project.description}</p>
+          <div class="project-tags">
+            ${project.tech.map(t => `<span class="tag">${t}</span>`).join('')}
+          </div>
+          <div class="project-links">
+            <a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn" aria-label="View live project ${project.title}">View Live</a>
+            <a href="${project.sourceUrl}" target="_blank" rel="noopener noreferrer" class="btn" aria-label="View source code for ${project.title}">Source Code</a>
+          </div>
+        </div>
+      `;
+      projectsGrid.appendChild(card);
+    });
+
+    pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(filteredProjects.length / projectsPerPage)}`;
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === Math.ceil(filteredProjects.length / projectsPerPage);
+  }
+
+  function applyFilters() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const tech = techFilter.value;
+
+    filteredProjects = projects.filter(project => {
+      const matchesSearch = project.title.toLowerCase().includes(searchTerm) || project.description.toLowerCase().includes(searchTerm);
+      const matchesTech = tech ? project.tech.includes(tech) : true;
+      return matchesSearch && matchesTech;
+    });
+    currentPage = 1;
+    renderProjects();
+  }
+
+  // Event listeners
+  searchInput.addEventListener('input', applyFilters);
+  techFilter.addEventListener('change', applyFilters);
+  prevBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderProjects();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  });
+  nextBtn.addEventListener('click', () => {
+    if (currentPage < Math.ceil(filteredProjects.length / projectsPerPage)) {
+      currentPage++;
+      renderProjects();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  });
+
+  // Initialize
+  renderProjects();
+</script>
+</body>
+</html>

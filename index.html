@@ -5,343 +5,219 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Geo Dev | Portfolio</title>
   <style>
-  /* Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f9fafb;
-  color: #222;
-  line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Container */
-.container {
-  width: 90%;
-  max-width: 1100px;
-  margin: 2rem auto;
-}
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
 
-/* Loader */
-#loader {
-  position: fixed;
-  inset: 0;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  transition: opacity 0.5s ease;
-}
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 6px solid #ddd;
-  border-top-color: #00bcd4;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 2rem auto;
+    }
 
-/* Offline Banner */
-#offline-banner {
-  background: #ff4d4d;
-  color: white;
-  text-align: center;
-  padding: 0.8rem;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 10000;
-  font-weight: 600;
-  font-size: 1rem;
-}
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 6px solid #334155;
+      border-top-color: #00bcd4;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
-/* Header */
-header {
-  background: #222;
-  color: white;
-  padding: 1rem 0;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-}
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
-  padding-bottom: 2px;
-  border-bottom: 2px solid transparent;
-}
-.nav-links a:hover,
-.nav-links a.active {
-  color: #00bcd4;
-  border-bottom-color: #00bcd4;
-}
+    #offline-banner {
+      background: #dc2626;
+      color: white;
+      text-align: center;
+      padding: 0.8rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10000;
+    }
 
-/* Hero */
-#hero {
-  text-align: center;
+    header {
+      background: #1e293b;
+      color: white;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #00bcd4;
+      border-bottom-color: #00bcd4;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #00bcd4;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .btn:hover { background: #0097a7; }
+
+    section { margin-top: 4rem; }
+
+    #hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    #hero p {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: #cbd5e1;
+    }
+    .highlight { color: #00bcd4; }
+    .center { text-align: center; }
+
+    #skills ul.skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      list-style: none;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+    .skills-list li {
+      background: #1e3a5f;
+      color: #e0f2fe;
+      padding: 0.7rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    #projects .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    .project-card {
+      background: #1e293b;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      color: #cbd5e1;
+    }
+
+    #contact p { margin: 0.5rem 0; font-size: 1.1rem; text-align: center; }
+    #contact a { color: #00bcd4; text-decoration: none; }
+
+    footer.footer {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 2rem 1rem 1rem;
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+#testimonials {
   margin-top: 4rem;
 }
-#hero h2 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-}
-.highlight {
-  color: #00bcd4;
-}
-#hero p {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  color: #555;
-}
-.btn {
-  display: inline-block;
-  background: #00bcd4;
-  color: white;
-  padding: 0.7rem 1.5rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.3s ease;
-}
-.btn:hover {
-  background: #0097a7;
-}
-
-/* Skills */
-#skills ul.skills-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  list-style: none;
-  margin-top: 1rem;
-}
-.skills-list li {
-  background: #e0f7fa;
-  color: #006064;
-  padding: 0.7rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  flex: 1 1 120px;
-  text-align: center;
-}
-
-/* Projects */
-#projects .projects-grid {
+.testimonials-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
   gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   margin-top: 1rem;
 }
-.project-card {
-  background: white;
+.testimonial-card {
+  background: #1e293b;
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: #e2e8f0;
 }
-.project-card h3 {
-  margin-bottom: 0.8rem;
-  color: #222;
-}
-.project-card p {
-  flex-grow: 1;
-  color: #555;
-  margin-bottom: 1rem;
-}
-.btn-secondary {
-  background: #eee;
-  color: #222;
-  border: 2px solid #00bcd4;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  text-align: center;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-.btn-secondary:hover {
-  background: #00bcd4;
-  color: white;
-}
-
-/* Contact */
-#contact p {
-  margin: 0.5rem 0;
-  font-size: 1.1rem;
-}
-#contact a {
-  color: #00bcd4;
-  text-decoration: none;
-}
-#contact a:hover {
-  text-decoration: underline;
-}
-
-/* Footer */
-footer.footer {
-  width: 100%;
-  background: #222;
-  color: white;
-  padding: 2rem 1rem 1rem;
-  margin-top: 3rem;
-  font-size: 0.9rem;
-}
-
-.footer-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 2rem;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.footer-brand h2 {
-  font-size: 1.5rem;
+.testimonial-card p {
+  font-style: italic;
   margin-bottom: 0.5rem;
 }
-
-.footer-brand p {
-  font-weight: 300;
-  color: #ccc;
-  max-width: 250px;
-}
-
-.footer-nav ul {
-  list-style: none;
-  padding-left: 0;
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  align-items: center;
-  margin: 0;
-}
-
-.footer-nav a {
-  color: #bbb;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.footer-nav a:hover {
+.testimonial-card h4 {
+  font-weight: 600;
   color: #00bcd4;
 }
 
-.footer-social {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
+    /* Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-.footer-social a {
-  color: #bbb;
-  transition: color 0.3s ease;
-  display: inline-flex;
-}
-
-.footer-social a:hover {
-  color: #00bcd4;
-}
-
-.footer-social svg {
-  display: block;
-}
-
-.footer-bottom {
-  text-align: center;
-  margin-top: 2rem;
-  color: #555;
-  font-size: 0.8rem;
-  border-top: 1px solid #444;
-  padding-top: 1rem;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  #skills ul.skills-list {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .header-container {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-  }
-  #hero h2 {
-    font-size: 2rem;
-  }
-  .footer-content {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .footer-nav ul {
-    justify-content: center;
-    gap: 1rem;
-  }
-  .footer-brand p {
-    max-width: 100%;
-  }
-}
+    @media (max-width: 600px) {
+      #hero h2 { font-size: 2rem; }
+      .nav-links { flex-direction: column; gap: 1rem; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Loader Screen -->
-  <div id="loader">
-    <div class="spinner"></div>
-  </div>
-
-  <!-- Offline Banner -->
-  <div id="offline-banner" role="alert" aria-live="assertive" hidden>
-    🚫 You are offline
-  </div>
+  <!-- Loader -->
+  <div id="loader"><div class="spinner"></div></div>
+  <div id="offline-banner" hidden>🚫 You are offline</div>
 
   <!-- Header -->
   <header>
     <div class="container header-container">
       <h1 class="logo">Geo Dev</h1>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="/index.html" class="active">Home</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="./pages/project.html">Projects</a></li>
-          <li><a href="./pages/contact.html">Contact</a></li>
-        </ul>
-      </nav>
+      <ul class="nav-links">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <a href="./pages/about.html">About </a>
+        <li><a href="./pages/project.html">Projects</a></li>
+        <li><a href="./pages/contact.html">Contact</a></li>
+        <a href="./pages/login.html">Login/Sign up</a>
+      </ul>
     </div>
   </header>
 
@@ -350,12 +226,20 @@ footer.footer {
     <h2>Hello, I’m <span class="highlight">Geo Dev</span></h2>
     <p>I build clean and responsive websites using HTML, CSS, and JavaScript.</p>
     <a href="./pages/project.html" class="btn">View Projects</a>
+  <!-- Hero -->
+  <section id="hero" class="container reveal">
+    <h2>Hello, I’m <span class="highlight">Geo Dev</span></h2>
+    <p>I build clean and responsive websites using HTML, CSS, and JavaScript.</p>
+    <div class="center">
+      <a href="#projects" class="btn">View Projects</a>
+    </div>
   </section>
 
+  <!-- Skills -->
   <!-- Skills Section -->
-  <section id="skills" class="container">
-    <h2>Skills</h2>
-    <ul class="skills-list">
+  <section id="skills" class="container reveal" class="container">
+    <h2 class="center">Skills</h2>
+    <ul class="skills-list-list">
       <li>HTML5</li>
       <li>CSS3</li>
       <li>JavaScript</li>
@@ -364,29 +248,48 @@ footer.footer {
     </ul>
   </section>
 
-  <!-- Projects Section -->
-  <section id="projects" class="container">
-    <h2>Projects</h2>
+  <!-- Projects -->
+  <section id="projects" class="container reveal">
+    <h2 class="center">Projects</h2>
     <div class="projects-grid">
-      <article class="project-card">
+      <div class="project-card">
         <h3>School Project</h3>
         <p>A responsive website hosted on Firebase Hosting.</p>
-        <a href="https://your-project-link.web.app" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">View Live</a>
-      </article>
-      <!-- Add more project cards here -->
+        <a href="#" class="btn">View Live</a>
+      </div>
+
     </div>
+    <!-- Testimonials -->
+<section id="testimonials" class="container reveal">
+  <h2 class="center">What People Say</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <p>“Geo Dev transformed our outdated site into a fast, modern experience. Highly recommended!”</p>
+      <h4>— JayD, His Teacher</h4>
+    </div>
+    <div class="testimonial-card">
+      <p>“Working with Geo Dev was smooth and professional from start to finish. Excellent job!”</p>
+      <h4>— Dushime M, His Teacher</h4>
+    </div>
+  </div>
+</section>
+<!-- love calculater -->
+
+
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="container">
-    <h2>Contact Me</h2>
+  <!-- Contact -->
+  <section id="contact" class="container reveal">
+    <h2 class="center">Contact Me</h2>
     <p>Email: <a href="mailto:geovanipacis@gmail.com">geovanipacis@gmail.com</a></p>
     <p>
-      <a href="#" target="_blank" rel="noopener noreferrer">GitHub</a> |
-      <a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="#">GitHub</a> | <a href="#">LinkedIn</a>
     </p>
   </section>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Geo Dev. All rights reserved.</p>
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-content container">
@@ -420,27 +323,35 @@ footer.footer {
     <div class="footer-bottom">&copy; 2025 Geo Dev. All rights reserved.</div>
   </footer>
 
+  <!-- Scripts -->
   <script>
-  // Loader hide on window load
-  window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
-    loader.style.opacity = 0;
-    setTimeout(() => loader.style.display = 'none', 500);
-  });
+    // Loader
+    window.addEventListener('load', () => {
+      document.getElementById('loader').style.opacity = 0;
+      setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+    });
 
-  // Offline banner toggle
-  function updateOnlineStatus() {
-    const banner = document.getElementById('offline-banner');
-    if (!navigator.onLine) {
-      banner.hidden = false;
-    } else {
-      banner.hidden = true;
+    // Offline banner
+    function updateOnlineStatus() {
+      const banner = document.getElementById('offline-banner');
+      banner.hidden = navigator.onLine;
     }
-  }
-  window.addEventListener('online', updateOnlineStatus);
-  window.addEventListener('offline', updateOnlineStatus);
-  updateOnlineStatus();
-  </script>
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
 
+    // Scroll Reveal
+    function revealOnScroll() {
+      document.querySelectorAll('.reveal').forEach((el) => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 100) {
+          el.classList.add("active");
+        }
+      });
+    }
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("load", revealOnScroll);
+  </script>
 </body>
 </html>
