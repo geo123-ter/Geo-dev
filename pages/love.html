@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Love Calculator - Geo Dev</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+  h1 {
+    color: #00bcd4;
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+  }
+  input {
+    padding: 0.7rem 1rem;
+    margin: 0.5rem;
+    border-radius: 8px;
+    border: none;
+    width: 220px;
+    font-size: 1.1rem;
+    outline: none;
+    transition: box-shadow 0.3s;
+  }
+  input:focus {
+    box-shadow: 0 0 5px #00bcd4;
+  }
+  button {
+    margin-top: 1rem;
+    background: #00bcd4;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #0097a7;
+  }
+  #result {
+    margin-top: 2.5rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fbbf24;
+    min-height: 60px;
+    text-align: center;
+  }
+
+  /* Heart animation */
+  .heart {
+    display: inline-block;
+    width: 50px;
+    height: 45px;
+    position: relative;
+    transform: rotate(-45deg);
+    margin-left: 1rem;
+    animation: pulse 1.5s infinite;
+  }
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 45px;
+    background: #f87171; /* pink/red */
+    border-radius: 50%;
+  }
+  .heart::before {
+    top: 0;
+    left: 25px;
+  }
+  .heart::after {
+    top: -25px;
+    left: 0;
+  }
+  @keyframes pulse {
+    0%, 100% {
+      transform: rotate(-45deg) scale(1);
+      filter: drop-shadow(0 0 3px #f87171);
+    }
+    50% {
+      transform: rotate(-45deg) scale(1.1);
+      filter: drop-shadow(0 0 10px #f87171);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    input {
+      width: 100%;
+    }
+    button {
+      width: 100%;
+    }
+    #result {
+      font-size: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <h1>Love Calculator 💖</h1>
+
+  <input id="name1" type="text" placeholder="Enter Your Name" />
+  <input id="name2" type="text" placeholder="Enter Their Name" />
+  <button onclick="calculateLove()">Calculate Love %</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateLove() {
+      const name1 = document.getElementById('name1').value.trim().toLowerCase();
+      const name2 = document.getElementById('name2').value.trim().toLowerCase();
+      const resultDiv = document.getElementById('result');
+
+      if (!name1 || !name2) {
+        alert('Please enter both names!');
+        return;
+      }
+
+      // Function to count common letters between two names
+      function countCommonLetters(a, b) {
+        let count = 0;
+        const usedIndexes = new Set();
+
+        for (let i = 0; i < a.length; i++) {
+          for (let j = 0; j < b.length; j++) {
+            if (a[i] === b[j] && !usedIndexes.has(j)) {
+              count++;
+              usedIndexes.add(j);
+              break;
+            }
+          }
+        }
+        return count;
+      }
+
+      // Calculate love score based on common letters and lengths
+      const commonLetters = countCommonLetters(name1, name2);
+      const maxLength = Math.max(name1.length, name2.length);
+      let loveScore = Math.floor((commonLetters / maxLength) * 100);
+
+      // Clamp values between 10 and 100 for better results
+      loveScore = Math.min(Math.max(loveScore, 10), 100);
+
+      // Animate the love score count-up
+      let current = 0;
+      resultDiv.innerHTML = '';
+      const heart = document.createElement('span');
+      heart.classList.add('heart');
+      resultDiv.appendChild(heart);
+
+      const interval = setInterval(() => {
+        if (current >= loveScore) {
+          clearInterval(interval);
+          resultDiv.innerHTML = `${capitalize(name1)} ❤️ ${capitalize(name2)} = ${loveScore}% Love!`;
+          resultDiv.appendChild(heart);
+        } else {
+          resultDiv.textContent = `${current}%`;
+          resultDiv.appendChild(heart);
+          current++;
+        }
+      }, 20);
+
+      // Capitalize function for nice display
+      function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -3,315 +3,617 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Settings - Admin Dashboard</title>
+<title>Geo Dev | Settings</title>
 <style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+  }
   body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background: #f0f2f5;
-    margin: 0;
-    padding: 0;
-    color: #222;
-  }
-  nav {
-    background-color: #222;
-    color: white;
-    padding: 1rem 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    min-height: 100vh;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
   }
-  nav .brand {
-    font-weight: bold;
-    font-size: 1.4rem;
+  body.dark {
+    background-color: #121212;
+    color: #eee;
   }
-  nav .nav-links {
-    display: flex;
-    gap: 1rem;
-  }
-  nav .nav-links a {
-    color: white;
+  a {
     text-decoration: none;
+    color: inherit;
+  }
+  button {
+    cursor: pointer;
+  }
+
+  /* Sidebar (reuse from dashboard) */
+  #sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 250px;
+    background-color: #007b8a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    transition: width 0.3s ease;
+    z-index: 1000;
+  }
+  #sidebar.collapsed {
+    width: 70px;
+  }
+  #sidebar .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    white-space: nowrap;
+    user-select: none;
+  }
+  #sidebar.collapsed .logo {
+    text-align: center;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+  #sidebar nav {
+    flex-grow: 1;
+  }
+  #sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
     font-weight: 600;
-    transition: color 0.3s;
+    transition: background-color 0.3s ease;
   }
-  nav .nav-links a:hover {
-    color: #00bcd4;
+  #sidebar nav a:hover, #sidebar nav a.active {
+    background-color: #004f55;
   }
-  nav button.logout-btn {
-    background-color: #e74c3c;
+  #sidebar.collapsed nav a span.text {
+    display: none;
+  }
+  #sidebar nav a svg {
+    min-width: 20px;
+    fill: white;
+  }
+  #sidebar .toggle-btn {
+    background: none;
     border: none;
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    margin-top: auto;
+    font-size: 1.2rem;
   }
-  nav button.logout-btn:hover {
-    background-color: #c0392b;
+  #sidebar.collapsed .toggle-btn {
+    text-align: center;
   }
-  main {
-    max-width: 700px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+
+  /* Main Content */
+  #main-content {
+    margin-left: 250px;
+    padding: 2rem 3rem;
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
   }
-  h1 {
-    margin-bottom: 1.5rem;
-    color: #222;
+  #sidebar.collapsed + #main-content {
+    margin-left: 70px;
   }
+
+  /* Header */
+  header#main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  header#main-header h1 {
+    font-size: 2rem;
+    color: #007b8a;
+  }
+
+  /* Form Styles */
   form {
     background: white;
+    border-radius: 15px;
     padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin-bottom: 2rem;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.dark form {
+    background: #1e1e1e;
+    color: #eee;
+  }
+  form h2 {
+    margin-bottom: 1rem;
+    color: #007b8a;
+  }
+  body.dark form h2 {
+    color: #66c2d9;
   }
   label {
     display: block;
-    margin-top: 1rem;
     font-weight: 600;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
   }
-  input[type="password"], input[type="checkbox"] {
-    font-size: 1rem;
-    padding: 0.5rem;
-  }
-  input[type="password"] {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"] {
     width: 100%;
-    border-radius: 6px;
-    border: 1.5px solid #ccc;
-    box-sizing: border-box;
-  }
-  .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  button.save-btn {
-    margin-top: 2rem;
-    background-color: #00bcd4;
-    border: none;
-    padding: 0.8rem 2rem;
-    color: white;
-    font-weight: 700;
-    font-size: 1.1rem;
+    padding: 0.6rem 1rem;
     border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    border: 1.5px solid #ccc;
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.3s ease;
+    background: white;
+    color: #333;
   }
-  button.save-btn:hover {
-    background-color: #0097a7;
+  body.dark input[type="text"],
+  body.dark input[type="email"],
+  body.dark input[type="password"],
+  body.dark input[type="tel"] {
+    background: #2a2a2a;
+    color: #eee;
+    border-color: #555;
   }
-  .message {
-    margin-top: 1rem;
-    font-weight: 600;
-  }
-  .message.success {
-    color: #4caf50;
-  }
-  .message.error {
-    color: #e74c3c;
-  }
-  @media (max-width: 900px) {
-    main {
-      max-width: 95vw;
-      padding: 0 0.5rem;
-    }
-    form {
-      padding: 1.2rem;
-    }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="tel"]:focus {
+    outline: none;
+    border-color: #007b8a;
   }
 
+  /* Toggle switches */
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 26px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: #007b8a;
+  }
+  input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+
+  /* Preference group */
+  .preference {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .preference label {
+    flex-grow: 1;
+    margin-bottom: 0;
+    user-select: none;
+  }
+
+  /* Buttons */
+  .btn {
+    background: #007b8a;
+    color: white;
+    padding: 0.8rem 1.8rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 1rem;
+    user-select: none;
+  }
+  .btn:hover {
+    background: #005f64;
+  }
+  .btn-secondary {
+    background: #ccc;
+    color: #333;
+  }
+  .btn-secondary:hover {
+    background: #999;
+  }
+
+  /* Feedback messages */
+  .feedback {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #e74c3c;
+  }
+  .feedback.success {
+    color: #27ae60;
+  }
+
+  /* Section */
+  section.settings-section {
+    margin-bottom: 3rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    #main-content {
+      padding: 1.5rem 1rem;
+    }
+  }
   @media (max-width: 600px) {
-    nav {
+    header#main-header {
       flex-direction: column;
-      align-items: flex-start;
-      padding: 1rem;
-      gap: 0.7rem;
-    }
-    nav .nav-links {
-      flex-direction: column;
-      gap: 0.5rem;
-      width: 100%;
-    }
-    nav .brand {
-      font-size: 1.1rem;
-    }
-    main {
-      margin: 1rem 0;
-      padding: 0 0.2rem;
-    }
-    form {
-      padding: 0.7rem;
-      border-radius: 8px;
-    }
-    button.save-btn {
-      width: 100%;
-      font-size: 1rem;
-      padding: 0.7rem 0;
-    }
-    fieldset {
-      padding: 0;
-    }
-    label, input[type="password"] {
-      font-size: 0.98rem;
+      align-items: stretch;
     }
   }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="brand">Admin Dashboard</div>
-  <div class="nav-links">
-    <a href="./dashboard.html">Home</a>
-    <a href="./user.html">Users</a>
-    <a href="./project.html">Projects</a>
-    <a href="./setting.html" style="color:#00bcd4;">Settings</a>
-  </div>
-  <button class="logout-btn" id="logoutBtn">Logout</button>
-</nav>
+<!-- Sidebar -->
+<div id="sidebar" aria-label="Sidebar navigation">
+  <div class="logo" title="Geo Dev">Geo Dev</div>
+  <nav role="navigation" aria-label="Settings menu">
+    <a href="./dashboard.html" aria-label="Go to Dashboard">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="white" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z"/></svg>
+      <span class="text">Dashboard</span>
+    </a>
+    <a href="#" class="active" aria-current="page" aria-label="Current page Settings">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path fill="white" d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm-7 4a7 7 0 0 1 12 4.9 2 2 0 1 1-1.3 1.3A7 7 0 0 1 5 12z"/></svg>
+      <span class="text">Settings</span>
+    </a>
+  </nav>
+  <button class="toggle-btn" aria-label="Toggle sidebar">&#9776;</button>
+</div>
 
-<main>
-  <h1>Settings</h1>
-  <form id="settingsForm">
-    <fieldset>
-      <legend><strong>Change Password</strong></legend>
+<!-- Main Content -->
+<div id="main-content">
+  <header id="main-header">
+    <h1>Settings</h1>
+  </header>
+
+  <!-- Profile Settings -->
+  <section class="settings-section" aria-labelledby="profileSettingsTitle">
+    <h2 id="profileSettingsTitle">Profile Settings</h2>
+    <form id="profileForm" novalidate>
+      <label for="usernameInput">Full Name</label>
+      <input type="text" id="usernameInput" name="username" placeholder="Your full name" required minlength="3" />
+      <span class="feedback" id="usernameFeedback"></span>
+
+      <label for="emailInput">Email Address</label>
+      <input type="email" id="emailInput" name="email" placeholder="you@example.com" required />
+      <span class="feedback" id="emailFeedback"></span>
+
+      <label for="phoneInput">Phone Number</label>
+      <input type="tel" id="phoneInput" name="phone" placeholder="+250 7XX XXX XXX" pattern="^\+?\d{7,15}$" />
+      <span class="feedback" id="phoneFeedback"></span>
+
+      <button type="submit" class="btn">Save Profile</button>
+      <button type="reset" class="btn btn-secondary">Reset</button>
+      <div id="profileMsg" class="feedback" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <!-- Password Change -->
+  <section class="settings-section" aria-labelledby="passwordChangeTitle">
+    <h2 id="passwordChangeTitle">Change Password</h2>
+    <form id="passwordForm" novalidate>
       <label for="currentPassword">Current Password</label>
-      <input type="password" id="currentPassword" placeholder="Enter current password" required />
-      
+      <input type="password" id="currentPassword" name="currentPassword" placeholder="Current password" required minlength="6" />
+      <span class="feedback" id="currentPasswordFeedback"></span>
+
       <label for="newPassword">New Password</label>
-      <input type="password" id="newPassword" placeholder="Enter new password" minlength="6" required />
-      
-      <label for="confirmNewPassword">Confirm New Password</label>
-      <input type="password" id="confirmNewPassword" placeholder="Confirm new password" minlength="6" required />
-    </fieldset>
+      <input type="password" id="newPassword" name="newPassword" placeholder="New password" required minlength="6" />
+      <span class="feedback" id="newPasswordFeedback"></span>
 
-    <fieldset style="margin-top: 2rem;">
-      <legend><strong>Preferences</strong></legend>
-      
-      <div class="checkbox-group">
-        <input type="checkbox" id="darkModeToggle" />
-        <label for="darkModeToggle">Enable Dark Mode</label>
-      </div>
-      
-      <div class="checkbox-group" style="margin-top: 1rem;">
-        <input type="checkbox" id="notificationsToggle" />
-        <label for="notificationsToggle">Enable Notifications</label>
-      </div>
-    </fieldset>
+      <label for="confirmPassword">Confirm New Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password" required minlength="6" />
+      <span class="feedback" id="confirmPasswordFeedback"></span>
 
-    <button type="submit" class="save-btn">Save Settings</button>
-    <div id="settingsMsg" class="message"></div>
-  </form>
-</main>
+      <button type="submit" class="btn">Update Password</button>
+      <button type="reset" class="btn btn-secondary">Reset</button>
+      <div id="passwordMsg" class="feedback" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <!-- Preferences -->
+  <section class="settings-section" aria-labelledby="preferencesTitle">
+    <h2 id="preferencesTitle">Preferences</h2>
+    <form id="preferencesForm" novalidate>
+      <div class="preference">
+        <label for="darkModePref">Dark Mode</label>
+        <label class="toggle-switch" aria-label="Toggle dark mode">
+          <input type="checkbox" id="darkModePref" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="preference">
+        <label for="notifPref">Enable Notifications</label>
+        <label class="toggle-switch" aria-label="Toggle notifications">
+          <input type="checkbox" id="notifPref" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn">Save Preferences</button>
+      <div id="preferencesMsg" class="feedback" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <!-- Security Settings -->
+  <section class="settings-section" aria-labelledby="securityTitle">
+    <h2 id="securityTitle">Security Settings</h2>
+    <form id="securityForm" novalidate>
+      <div class="preference">
+        <label for="twoFactorAuth">Two-Factor Authentication (2FA)</label>
+        <label class="toggle-switch" aria-label="Toggle two-factor authentication">
+          <input type="checkbox" id="twoFactorAuth" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <p style="font-size: 0.9rem; color: #777; max-width: 600px;">
+        Two-Factor Authentication adds an extra layer of security by requiring a second form of verification when logging in.
+      </p>
+
+      <button type="submit" class="btn">Save Security Settings</button>
+      <div id="securityMsg" class="feedback" aria-live="polite"></div>
+    </form>
+  </section>
+</div>
 
 <script>
-  // Check login - redirect if not logged in
-  const loggedInUser = localStorage.getItem('loggedInUser');
-  if (!loggedInUser) {
-    window.location.href = 'index.html'; // redirect to login
-  }
-
-  const logoutBtn = document.getElementById('logoutBtn');
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('loggedInUser');
-    window.location.href = 'index.html';
+  // Sidebar toggle (reuse from dashboard)
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = sidebar.querySelector('.toggle-btn');
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
   });
 
-  const settingsForm = document.getElementById('settingsForm');
-  const currentPasswordInput = document.getElementById('currentPassword');
-  const newPasswordInput = document.getElementById('newPassword');
-  const confirmNewPasswordInput = document.getElementById('confirmNewPassword');
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  const notificationsToggle = document.getElementById('notificationsToggle');
-  const settingsMsg = document.getElementById('settingsMsg');
+  // Load user data from localStorage (simulate)
+  let users = JSON.parse(localStorage.getItem('users')) || {};
+  let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+  if (!loggedInUser) {
+    window.location.href = './login.html';
+  }
 
-  // Load saved preferences from localStorage
-  function loadPreferences() {
+  // Profile form elements
+  const profileForm = document.getElementById('profileForm');
+  const usernameInput = document.getElementById('usernameInput');
+  const emailInput = document.getElementById('emailInput');
+  const phoneInput = document.getElementById('phoneInput');
+
+  const usernameFeedback = document.getElementById('usernameFeedback');
+  const emailFeedback = document.getElementById('emailFeedback');
+  const phoneFeedback = document.getElementById('phoneFeedback');
+  const profileMsg = document.getElementById('profileMsg');
+
+  // Password form elements
+  const passwordForm = document.getElementById('passwordForm');
+  const currentPassword = document.getElementById('currentPassword');
+  const newPassword = document.getElementById('newPassword');
+  const confirmPassword = document.getElementById('confirmPassword');
+
+  const currentPasswordFeedback = document.getElementById('currentPasswordFeedback');
+  const newPasswordFeedback = document.getElementById('newPasswordFeedback');
+  const confirmPasswordFeedback = document.getElementById('confirmPasswordFeedback');
+  const passwordMsg = document.getElementById('passwordMsg');
+
+  // Preferences form
+  const preferencesForm = document.getElementById('preferencesForm');
+  const darkModePref = document.getElementById('darkModePref');
+  const notifPref = document.getElementById('notifPref');
+  const preferencesMsg = document.getElementById('preferencesMsg');
+
+  // Security form
+  const securityForm = document.getElementById('securityForm');
+  const twoFactorAuth = document.getElementById('twoFactorAuth');
+  const securityMsg = document.getElementById('securityMsg');
+
+  // Initialize form with user data
+  function loadUserData() {
+    if (!loggedInUser) return;
+    usernameInput.value = loggedInUser.username || '';
+    emailInput.value = loggedInUser.email || '';
+    phoneInput.value = users[loggedInUser.email]?.phone || '';
+
+    // Preferences
     const darkMode = localStorage.getItem('darkMode') === 'true';
-    const notifications = localStorage.getItem('notifications') === 'true';
-    darkModeToggle.checked = darkMode;
-    notificationsToggle.checked = notifications;
+    darkModePref.checked = darkMode;
+    notifPref.checked = users[loggedInUser.email]?.notificationsEnabled ?? true;
 
-    if(darkMode) {
-      document.body.style.backgroundColor = '#121212';
-      document.body.style.color = '#eee';
+    // Security
+    twoFactorAuth.checked = users[loggedInUser.email]?.twoFactorEnabled ?? false;
+
+    applyDarkMode(darkMode);
+  }
+
+  // Dark mode helper
+  function applyDarkMode(enabled) {
+    if (enabled) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
     }
   }
 
-  loadPreferences();
-
-  // Password validation helper
-  function getUserPassword(email) {
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    if(users[email]) {
-      return users[email].password;
-    }
-    return null;
-  }
-
-  settingsForm.addEventListener('submit', (e) => {
+  // Profile form validation & submission
+  profileForm.addEventListener('submit', e => {
     e.preventDefault();
-    settingsMsg.textContent = '';
-    settingsMsg.className = 'message';
+    clearProfileFeedback();
 
-    const currentPass = currentPasswordInput.value.trim();
-    const newPass = newPasswordInput.value.trim();
-    const confirmPass = confirmNewPasswordInput.value.trim();
+    let valid = true;
 
-    // Validate password change if fields are filled
-    if (currentPass || newPass || confirmPass) {
-      if (!currentPass || !newPass || !confirmPass) {
-        settingsMsg.textContent = 'Please fill all password fields to change password.';
-        settingsMsg.classList.add('error');
-        return;
-      }
-      if (newPass.length < 6) {
-        settingsMsg.textContent = 'New password must be at least 6 characters.';
-        settingsMsg.classList.add('error');
-        return;
-      }
-      if (newPass !== confirmPass) {
-        settingsMsg.textContent = 'New password and confirm password do not match.';
-        settingsMsg.classList.add('error');
-        return;
-      }
-
-      const storedPassword = getUserPassword(loggedInUser);
-      if (storedPassword !== currentPass) {
-        settingsMsg.textContent = 'Current password is incorrect.';
-        settingsMsg.classList.add('error');
-        return;
-      }
-
-      // Save new password
-      const users = JSON.parse(localStorage.getItem('users') || '{}');
-      users[loggedInUser].password = newPass;
-      localStorage.setItem('users', JSON.stringify(users));
+    if (usernameInput.value.trim().length < 3) {
+      usernameFeedback.textContent = 'Please enter at least 3 characters.';
+      valid = false;
     }
+    if (!validateEmail(emailInput.value.trim())) {
+      emailFeedback.textContent = 'Please enter a valid email address.';
+      valid = false;
+    }
+    if (phoneInput.value.trim() && !validatePhone(phoneInput.value.trim())) {
+      phoneFeedback.textContent = 'Enter a valid phone number (7 to 15 digits, optional +).';
+      valid = false;
+    }
+    if (!valid) return;
+
+    // Save user profile changes
+    const oldEmail = loggedInUser.email;
+    const newEmail = emailInput.value.trim();
+
+    // If email changed, update keys in users object
+    if (oldEmail !== newEmail) {
+      users[newEmail] = users[oldEmail] || {};
+      delete users[oldEmail];
+      loggedInUser.email = newEmail;
+    }
+
+    loggedInUser.username = usernameInput.value.trim();
+    users[newEmail] = users[newEmail] || {};
+    users[newEmail].phone = phoneInput.value.trim();
+
+    // Save updated data
+    localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+    localStorage.setItem('users', JSON.stringify(users));
+
+    profileMsg.textContent = 'Profile updated successfully!';
+    profileMsg.classList.remove('error');
+    profileMsg.classList.add('success');
+  });
+
+  function clearProfileFeedback() {
+    usernameFeedback.textContent = '';
+    emailFeedback.textContent = '';
+    phoneFeedback.textContent = '';
+    profileMsg.textContent = '';
+  }
+
+  // Password form validation & submission
+  passwordForm.addEventListener('submit', e => {
+    e.preventDefault();
+    clearPasswordFeedback();
+
+    const currentPassValue = currentPassword.value.trim();
+    const newPassValue = newPassword.value.trim();
+    const confirmPassValue = confirmPassword.value.trim();
+
+    if (currentPassValue.length < 6) {
+      currentPasswordFeedback.textContent = 'Please enter your current password (min 6 chars).';
+      return;
+    }
+
+    // Simulated current password check (in reality, verify on server)
+    if (users[loggedInUser.email]?.password !== currentPassValue) {
+      currentPasswordFeedback.textContent = 'Current password is incorrect.';
+      return;
+    }
+    if (newPassValue.length < 6) {
+      newPasswordFeedback.textContent = 'New password must be at least 6 characters.';
+      return;
+    }
+    if (newPassValue !== confirmPassValue) {
+      confirmPasswordFeedback.textContent = 'Passwords do not match.';
+      return;
+    }
+
+    // Update password
+    users[loggedInUser.email].password = newPassValue;
+    localStorage.setItem('users', JSON.stringify(users));
+
+    passwordMsg.textContent = 'Password updated successfully!';
+    passwordMsg.classList.remove('error');
+    passwordMsg.classList.add('success');
+
+    // Reset form fields
+    passwordForm.reset();
+  });
+
+  function clearPasswordFeedback() {
+    currentPasswordFeedback.textContent = '';
+    newPasswordFeedback.textContent = '';
+    confirmPasswordFeedback.textContent = '';
+    passwordMsg.textContent = '';
+  }
+
+  // Preferences form submission
+  preferencesForm.addEventListener('submit', e => {
+    e.preventDefault();
+    preferencesMsg.textContent = '';
 
     // Save preferences
-    localStorage.setItem('darkMode', darkModeToggle.checked);
-    localStorage.setItem('notifications', notificationsToggle.checked);
+    const newDarkMode = darkModePref.checked;
+    localStorage.setItem('darkMode', newDarkMode);
+    applyDarkMode(newDarkMode);
 
-    // Apply dark mode if enabled
-    if (darkModeToggle.checked) {
-      document.body.style.backgroundColor = '#121212';
-      document.body.style.color = '#eee';
-    } else {
-      document.body.style.backgroundColor = '#f0f2f5';
-      document.body.style.color = '#222';
-    }
+    users[loggedInUser.email] = users[loggedInUser.email] || {};
+    users[loggedInUser.email].notificationsEnabled = notifPref.checked;
 
-    settingsMsg.textContent = 'Settings saved successfully!';
-    settingsMsg.classList.add('success');
-
-    // Clear password fields
-    currentPasswordInput.value = '';
-    newPasswordInput.value = '';
-    confirmNewPasswordInput.value = '';
+    localStorage.setItem('users', JSON.stringify(users));
+    preferencesMsg.textContent = 'Preferences saved!';
+    preferencesMsg.classList.remove('error');
+    preferencesMsg.classList.add('success');
   });
-</script>
 
+  // Security form submission
+  securityForm.addEventListener('submit', e => {
+    e.preventDefault();
+    securityMsg.textContent = '';
+
+    users[loggedInUser.email] = users[loggedInUser.email] || {};
+    users[loggedInUser.email].twoFactorEnabled = twoFactorAuth.checked;
+
+    localStorage.setItem('users', JSON.stringify(users));
+    securityMsg.textContent = 'Security settings saved!';
+    securityMsg.classList.remove('error');
+    securityMsg.classList.add('success');
+  });
+
+  // Email validation helper
+  function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+  // Phone validation helper (simple regex)
+  function validatePhone(phone) {
+    const re = /^\+?\d{7,15}$/;
+    return re.test(phone);
+  }
+
+  // Initialize on page load
+  loadUserData();
+</script>
 </body>
 </html>

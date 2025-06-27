@@ -1,0 +1,486 @@
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f4f8;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+header {
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  color: #007acc;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+  user-select: none;
+}
+
+/* Search input and button */
+#searchInput {
+  width: 60%;
+  max-width: 400px;
+  padding: 12px 15px;
+  border: 2px solid #007acc;
+  border-radius: 30px 0 0 30px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#searchInput:focus {
+  border-color: #005fa3;
+}
+
+#searchBtn {
+  padding: 12px 25px;
+  border: none;
+  background: #007acc;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 0 30px 30px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#searchBtn:hover {
+  background: #005fa3;
+}
+
+/* Categories nav */
+#categories {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.category-btn {
+  padding: 10px 18px;
+  border: none;
+  background: #007acc;
+  color: white;
+  font-weight: 600;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.category-btn:hover {
+  background: #005fa3;
+  box-shadow: 0 4px 8px rgba(0, 95, 163, 0.4);
+}
+
+.category-btn.active {
+  background: #004880;
+  box-shadow: 0 0 10px #004880aa;
+  pointer-events: none;
+}
+
+/* News container */
+#newsContainer {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Each article */
+article {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 25px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  cursor: default;
+}
+
+article:hover {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+article h2 {
+  margin-top: 0;
+  color: #007acc;
+  font-size: 1.5rem;
+  user-select: text;
+}
+
+article img {
+  max-width: 100%;
+  margin: 15px 0;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  user-select: none;
+}
+
+article p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #444;
+  user-select: text;
+  margin-bottom: 12px;
+}
+
+article a {
+  color: #007acc;
+  font-weight: 600;
+  text-decoration: none;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+article a:hover {
+  color: #004880;
+  text-decoration: underline;
+}
+
+/* Pagination */
+#pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 30px 0;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  border: 1.8px solid #007acc;
+  border-radius: 8px;
+  background: white;
+  color: #007acc;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.page-btn:hover {
+  background: #007acc;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 122, 204, 0.4);
+}
+
+.page-btn[style*="font-weight:bold"] {
+  background: #004880 !important;
+  color: white !important;
+  border-color: #004880 !important;
+  cursor: default;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  #searchInput {
+    width: 100%;
+    border-radius: 25px;
+    margin-bottom: 12px;
+  }
+
+  #searchBtn {
+    width: 100%;
+    border-radius: 25px;
+  }
+
+  #categories {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+/* Search wrapper - to keep search input & button inline */
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+/* Hamburger menu button - hidden on desktop */
+#menuToggle {
+  display: none;
+  font-size: 2.2rem;
+  background: none;
+  border: none;
+  color: #007acc;
+  cursor: pointer;
+  user-select: none;
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  z-index: 1000;
+  transition: color 0.3s ease;
+}
+
+#menuToggle:hover {
+  color: #005fa3;
+}
+
+/* Categories nav default on desktop */
+#categories {
+  display: flex !important;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
+  position: static !important;
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+/* Mobile styles */
+@media (max-width: 700px) {
+  /* Show hamburger */
+  #menuToggle {
+    display: block;
+  }
+
+  /* Hide categories by default */
+  #categories.closed {
+    display: none !important;
+  }
+
+  /* Show categories when open */
+  #categories.open {
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: white;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    padding: 10px;
+    width: 160px;
+    z-index: 999;
+  }
+
+  /* Category buttons stack vertically on mobile */
+  #categories.open .category-btn {
+    margin: 6px 0;
+  }
+
+  /* Adjust header for relative positioning */
+  header {
+    position: relative;
+    padding-bottom: 40px; /* to avoid overlap */
+  }
+
+  /* Search wrapper full width */
+  .search-wrapper {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #searchInput {
+    width: 70%;
+  }
+
+  #searchBtn {
+    width: auto;
+  }
+}
+/* Toggle wrapper styling */
+.toggle-wrapper {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+  font-weight: 600;
+  color: #007acc;
+  font-size: 0.95rem;
+}
+
+/* Switch styling from https://www.w3schools.com/howto/howto_css_switch.asp */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #007acc;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* DARK THEME VARIABLES */
+:root {
+  --bg-color: #f0f4f8;
+  --text-color: #333;
+  --header-color: #007acc;
+  --article-bg: white;
+  --article-shadow: rgba(0,0,0,0.1);
+  --button-bg: #007acc;
+  --button-bg-hover: #005fa3;
+  --link-color: #007acc;
+  --link-hover: #004880;
+}
+
+/* DARK MODE OVERRIDES */
+body.dark-mode {
+  background-color: #121212;
+  color: #ddd;
+}
+
+body.dark-mode header h1 {
+  color: var(--button-bg);
+}
+
+body.dark-mode .toggle-wrapper {
+  color: var(--button-bg);
+}
+
+body.dark-mode #searchInput {
+  background-color: #333;
+  border-color: var(--button-bg);
+  color: #ddd;
+}
+
+body.dark-mode #searchInput::placeholder {
+  color: #bbb;
+}
+
+body.dark-mode #searchBtn {
+  background-color: var(--button-bg);
+  color: white;
+}
+
+body.dark-mode #searchBtn:hover {
+  background-color: var(--button-bg-hover);
+}
+
+body.dark-mode #categories {
+  background-color: #222;
+  box-shadow: 0 8px 15px rgba(255 255 255 / 0.1);
+}
+
+body.dark-mode .category-btn {
+  background-color: var(--button-bg);
+  color: white;
+  box-shadow: none;
+}
+
+body.dark-mode .category-btn:hover {
+  background-color: var(--button-bg-hover);
+  box-shadow: 0 4px 8px rgba(0 95 163 / 0.6);
+}
+
+body.dark-mode .category-btn.active {
+  background-color: #004880;
+  box-shadow: 0 0 10px #004880aa;
+}
+
+body.dark-mode article {
+  background-color: #1e1e1e;
+  box-shadow: 0 3px 8px rgba(255 255 255 / 0.05);
+}
+
+body.dark-mode article h2 {
+  color: var(--button-bg);
+}
+
+body.dark-mode article p,
+body.dark-mode article a {
+  color: #ccc;
+}
+
+body.dark-mode article a:hover {
+  color: var(--link-hover);
+}
+
+body.dark-mode #pagination {
+  gap: 10px;
+}
+
+body.dark-mode .page-btn {
+  background: #222;
+  border-color: var(--button-bg);
+  color: var(--button-bg);
+}
+
+body.dark-mode .page-btn:hover {
+  background: var(--button-bg);
+  color: white;
+}
+
+body.dark-mode .page-btn[style*="font-weight:bold"] {
+  background: #004880 !important;
+  color: white !important;
+  border-color: #004880 !important;
+}
+
+/* Hamburger & other elements remain visible in dark mode */
+body.dark-mode #menuToggle {
+  color: var(--button-bg);
+}
+
+.limk {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 15px;
+  background: var(--button-bg);
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+.limk:hover {
+  background: var(--button-bg-hover);
+}

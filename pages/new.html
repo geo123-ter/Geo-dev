@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GEO Dev News App</title>
+<link rel="stylesheet" href="../css/new.css" />
+</head>
+<body>
+<header>
+  
+
+  <h1>GEO Dev News</h1>  
+  <div class="search-wrapper">
+    <input type="text" id="searchInput" placeholder="Search news..." />
+    <button id="searchBtn">Search</button>
+  </div>
+
+  <button id="menuToggle" aria-label="Toggle menu">&#9776;</button>
+
+  <nav id="categories" class="closed">
+    <button data-category="general" class="category-btn active">General</button>
+    <button data-category="business" class="category-btn">Business</button>
+    <button data-category="technology" class="category-btn">Technology</button>
+    <button data-category="sports" class="category-btn">Sports</button>
+    <button data-category="health" class="category-btn">Health</button>
+     <div class="toggle-wrapper">
+  <label class="switch">
+    <input type="checkbox" id="darkModeToggle" />
+    <span class="slider"></span>
+  </label>
+  <span>Dark Mode</span>
+</div>
+  <a href="../index.html" class="limk">Back</a>
+  </nav>
+  
+ 
+</header>
+
+
+  <main id="newsContainer">
+    <!-- News articles will appear here -->
+  </main>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>

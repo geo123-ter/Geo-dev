@@ -7,22 +7,22 @@
 <style>
   body {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
-    background: #f5f7fa;
+    background: #0f172a;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
   .container {
-    background: white;
+    background:#0f172a;
     padding: 2em 3em;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
     width: 350px;
   }
   h2 {
     text-align: center;
-    color: #333;
+    color: #958e8e;
   }
   form {
     display: flex;
@@ -35,13 +35,13 @@
     padding: 0.8em;
     font-size: 1em;
     border-radius: 8px;
-    border: 1.5px solid #222;
+    border: 1.5px solid #878282;
     transition: border-color 0.3s ease;
     margin-bottom: 20px;
   }
   input:focus {
     outline: none;
-    border-color: #00bcd4;
+    border-color: #000000;
   }
   button {
     background: #222;
@@ -59,14 +59,14 @@
   .message {
     margin-top: 1em;
     font-size: 0.9em;
-    color: #f91900;
+    color: #ff1900d3;
     text-align: center;
   }
   .success {
-    color: #0ce366;
+    color: #00ff6a;
   }
   .toggle-link {
-    color: #000202;
+    color: #f2f4f4;
     cursor: pointer;
     text-align: center;
     margin-top: 1em;
@@ -149,12 +149,12 @@
     loginMessage.textContent = '';
   });
 
-  // Helper: get users object from localStorage or create empty
+  //  get users object from localStorage or create empty
   function getUsers() {
     return JSON.parse(localStorage.getItem('users') || '{}');
   }
 
-  // Helper: save users object to localStorage
+  //save users object to localStorage
   function saveUsers(users) {
     localStorage.setItem('users', JSON.stringify(users));
   }
